@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import Link from "next/link";
 
 
-const resetpassword = () => {
+const Resetpassword = () => {
   const [email,setEmail] = useState()
 
   const router = useRouter()
@@ -42,7 +42,7 @@ const resetpassword = () => {
             </div>
             </Link>
             <div className="logo-wrapper">
-            <Image src='/images/login-images/logo.png' width={200} height={200} />
+            <Image src='/images/login-images/logo.png' width={200} height={200} alt="logoImage" />
             </div>
             <div className="login-form">
                 <form onSubmit={resetPass}>
@@ -76,4 +76,4 @@ const resetpassword = () => {
   )
 }
 
-export default resetpassword
+export default Resetpassword

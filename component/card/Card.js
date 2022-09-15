@@ -6,6 +6,7 @@ import { LoadingPosts } from './LoadingCard'
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect } from 'react'
 import axios from 'axios'
+import Link from 'next/link'
 
 
 
@@ -46,10 +47,9 @@ useEffect(() =>{
 },[])
 
 const fetchMoreData = () => {
-
     getProductList()
-  
 }
+
 
 
 
@@ -66,7 +66,7 @@ const fetchMoreData = () => {
           next={fetchMoreData}
           hasMore={enviroment.length < totalCount }
           loader={<LoadingPosts />}
-          height={400}
+          height={350}
           endMessage={
             <p style={{ textAlign: "center",padding:"10px 0px" }}>
               <b>Yay! You have seen it all</b>
@@ -79,15 +79,24 @@ const fetchMoreData = () => {
             {
              enviroment && enviroment.length > 0 && enviroment.map((item,index) => {
                 return (
-                <div key={index} className='col-md-6'>
+               <Link href={{
+                pathname: '/spaces/unity',
+                query: { 
+                  type: 'explore',
+                  id:item.id,
+                  name:item.name.toUpperCase()
+                 },
+               }}>
+                 <div key={index} className='col-md-6'>
                    <div className='box-height-medium'>
-                    <Image src={item.img} layout='fill'/>
+                    <Image priority src={item.img} layout='fill' alt='enviromentImages'/>
                      <div className="exlusive-boxHeading">
                         <h3>{item.name}</h3>
                         <p>by {item.author}</p>
                      </div>
+                  </div>
                </div>
-               </div>
+               </Link>
                
                 )
              }) 

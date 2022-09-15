@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { loginFailure, loginStart, loginSuccess } from "../../component/redux/UserSlice";
 import { useAuth } from "../../component/router/AuthContext";
 
-const register = () => {
+const Register = () => {
   const [email,setEmail] = useState('')
   const [name,setName] = useState('')
   const [password,setPassword] = useState('')
@@ -119,7 +119,7 @@ const register = () => {
             </div>
             </Link>
             <div className="logo-wrapper">
-            <Image src='/images/login-images/logo.png' width={200} height={200} />
+            <Image src='/images/login-images/logo.png' width={200} height={200} alt="logoImage" />
             </div>
             <div className="login-form">
                 <form onSubmit={registerHandle}>
@@ -185,5 +185,5 @@ const register = () => {
   )
 }
 
-export default register
+export default Register
 

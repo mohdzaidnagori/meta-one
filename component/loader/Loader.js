@@ -1,7 +1,8 @@
 const Loader = () => {
   return (
     <>
-      <div className="wrapper">
+     <div className="loader-body">
+     <div className="wrapper">
         <div className="box-wrap">
             <div className="box one"></div>
             <div className="box two"></div>
@@ -11,12 +12,19 @@ const Loader = () => {
             <div className="box six"></div>
         </div>
     </div>
+     </div>
     <style jsx>
       {`
        *:before, *:after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+   }
+   .loader-body{
+    position:relative;
+    background:#fff;
+    height:100vh;
+    width:100vw;
    }
     .wrapper {
         position: absolute;
@@ -25,7 +33,7 @@ const Loader = () => {
         margin: -100px;
         width: 200px;
         height: 200px;
-        background-color: transparent;
+        background-color: #fff;
         border: none;
         -webkit-user-select: none;
    }

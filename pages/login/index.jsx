@@ -6,7 +6,7 @@ import { AiOutlineMail} from "react-icons/ai";
 import toast, { Toaster } from 'react-hot-toast';
 import validator from 'validator'
 import { useDispatch } from 'react-redux';
-import { loginFailure, loginStart, loginSuccess, signin } from '../../component/redux/UserSlice';
+import { loginFailure, loginStart, loginSuccess} from '../../component/redux/userSlice';
 import {auth,provider,signInWithEmailAndPassword} from '../../firebase';
 import LoginLeft from '../../component/login-left/LoginLeft';
 import Link from 'next/link'
@@ -15,7 +15,18 @@ import { useRouter } from 'next/router';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 
-const index = () => {
+const Index = () => {
+
+  const { user } = useAuth()
+  const router = useRouter()
+
+
+  useEffect(() => {
+    if (user) {
+      router.push('/spaces')  
+    }
+  }, [router,user])
+
   const [passwordType,setPasswordType] = useState('password')
   const [email,setEmail] =  useState('')
   const [password,setPassword] =  useState('')
@@ -33,21 +44,16 @@ const index = () => {
   const googleHandle = () => {
     signInWithPopup(auth, provider)
   .then((result) => {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    // The signed-in user info.
-    const user = result.user;
     setTimeout(() => {
-      router.push('/space')
+      router.push('/spaces')
     }, 1000);
    
-    // ...
   }).catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;
     console.log({ errorCode, errorMessage });
+    router.push('/login')
   });
   }
   const handleLogin = (e) => {
@@ -79,17 +85,13 @@ const index = () => {
       dispatch(loginFailure())
     })
   }
-  const { user } = useAuth()
-  const router = useRouter()
+ 
 
-  useEffect(() => {
-    if (user) {
-      router.push('/space')
-    }
-  }, [router, user])
+
 
   return (
-    <>
+    
+    <> 
     <Toaster />
     <div className="row login-container">
     <div className="col-md-8 videoContainer">
@@ -98,21 +100,21 @@ const index = () => {
         <div className="col-md-4 padding-0">
           <div className="login-box">
             <div className="logo-wrapper">
-            <Image src='/images/login-images/logo.png' width={200} height={200} />
+            <Image src='/images/login-images/logo.png' width={200} height={200} alt="logoImage" />
             </div>
             <motion.div
              className="googleButton"
              whileHover={{ scale: 1.1 }}
              onClick={googleHandle}
              >
-              <Image src='/images/login-images/Google.png' className='image-google' width={20} height={20} />
+              <Image src='/images/login-images/Google.png' className='image-google' width={20} height={20} alt="googleImage" />
              <h5 className='login-brand-text'>Google</h5>
             </motion.div>
             <motion.div 
             className="googleButton"
             whileHover={{ scale: 1.1 }}
             >
-            <Image src='/images/login-images/Microsoft.png' className='image-google' width={20} height={20} />
+            <Image src='/images/login-images/Microsoft.png' className='image-google' width={20} height={20} alt="microsoftImage" />
               <h5 className='login-brand-text'>Microsoft</h5>
             </motion.div>
             <div className="login-form">
@@ -153,6 +155,7 @@ const index = () => {
           </div>
         </div>
     </div>
+
     <style jsx>
       {`
       
@@ -162,9 +165,11 @@ const index = () => {
       
       `}
       </style>
+
     </>
   )
+  
 }
 
 
-export default index
+export default Index

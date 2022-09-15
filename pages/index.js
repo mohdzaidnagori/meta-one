@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useDispatch } from 'react-redux'
 import { exploreData } from '../assets/data/exploreData'
 import Navbar from '../component/navbar/Navbar'
-import { logout, selectUser } from '../component/redux/UserSlice'
+// import { logout, selectUser } from '../component/redux/UserSlice'
 import { auth } from '../firebase'
 import {useRef} from 'react';
 import Exclusive from '../component/home/Exclusive'
@@ -12,7 +12,7 @@ import Exclusive from '../component/home/Exclusive'
 
 export default function Home() {
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   
   exploreData.map((item) => {
     console.log(item)

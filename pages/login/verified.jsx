@@ -1,40 +1,29 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Loader from "../../component/loader/Loader";
-import { useAuth } from "../../component/router/AuthContext";
+import { useState } from "react";
 import { auth } from "../../firebase"
 
-const verified = () => {
+const Verified = () => {
+  const [calledPush, setCalledPush] = useState(false)
    const User = auth.currentUser;
-   const [loading,setLoading] = useState(true)
-   
   const router = useRouter()
     if(User !== null){
-      // console.log('false')
-      // const checkForVerifiedInterval = setInterval(() => {
-      //   User.reload().then(ok => {
-      //       if (User.emailVerified) {
-      //         clearInterval(checkForVerifiedInterval)
-      //         setEmailVerified(true)
-      //         // router.push('/space')
-      //       }
-      //     })
-      // }, 1000)
       let interval = setInterval(async () => {
         if (User.emailVerified) {
             clearInterval(interval);
-            router.push('/space')
+            let calledPushLatest;
+            setCalledPush(latest => {
+                calledPushLatest = latest;
+                return latest;
+            })
+            if(calledPushLatest) return;
+            setCalledPush(true);
+            router.push('/spaces')
         }
        await  User.reload();
       }, 1000);
       
     }
-    // const { user } = useAuth()
-    //  useEffect(() => {
-    // if (user && user?.emailVerified === true) {
-    //   router.push('/space')
-    // }
-    // }, [router, user])
+ 
 
 
 
@@ -65,4 +54,4 @@ const verified = () => {
   )
 }
 
-export default verified
+export default Verified

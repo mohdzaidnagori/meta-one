@@ -14,11 +14,11 @@ const Exclusive = () => {
         <div className="row g-3">
             
             {
-             exploreData.map((item) => {
+             exploreData.map((item,index) => {
                 return (
-                <div key={item.author} className={item.class}>
+                <div key={index} className={item.class}>
                <div className={item.height}>
-                 <Image src={item.img} layout='fill'/>
+                 <Image src={item.img} layout='fill' alt='homeImages' />
                  <div className="exlusive-boxHeading">
                         <h3>{item.name}</h3>
                         <p>by {item.author}</p>
