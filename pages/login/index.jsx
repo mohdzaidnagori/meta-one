@@ -8,7 +8,7 @@ import validator from 'validator'
 import { useDispatch } from 'react-redux';
 import { loginFailure, loginStart, loginSuccess} from '../../component/redux/userSlice';
 import {auth,provider,signInWithEmailAndPassword} from '../../firebase';
-import LoginLeft from '../../component/login-left/LoginLeft';
+import LoginLeft from '../../component/login-left/Loginleft';
 import Link from 'next/link'
 import { useAuth } from '../../component/router/AuthContext';
 import { useRouter } from 'next/router';

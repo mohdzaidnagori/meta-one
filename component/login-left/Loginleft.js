@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 
-const LoginLeft = ({url}) => {
+const Loginleft = ({url}) => {
   const videoEl = useRef(null);
   const attemptPlay = () => {
     videoEl &&
@@ -38,4 +38,4 @@ const LoginLeft = ({url}) => {
   )
 }
 
-export default LoginLeft
+export default Loginleft
