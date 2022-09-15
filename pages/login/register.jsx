@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import LoginLeft from "../../component/login-left/LoginLeft"
+import LoginLeft from "../../component/login-left/Loginleft"
 import Image from 'next/image'
 import { BiUser,BiShow,BiHide,BiArrowBack,BiLockOpen} from "react-icons/bi";
 import { AiOutlineMail} from "react-icons/ai";
