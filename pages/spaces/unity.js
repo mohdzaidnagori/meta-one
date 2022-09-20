@@ -194,7 +194,7 @@ unityModel()
         )}
         <Unity
         unityProvider={unityProvider}
-        style={{ visibility: isLoaded ? "visible" : "hidden" }}
+        style={{ visibility: isLoaded ? "visible" : "hidden",width:'10%',height:'100%' }}
         />
         </div>
     </div>
