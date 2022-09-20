@@ -1,0 +1,195 @@
+[33mcommit b34f3314ec9bc009b165301eee504786d8c3671f[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: mohd zaid <mohd@skilliza.com>
+Date:   Tue Sep 20 15:37:12 2022 +0530
+
+    meta-one-2-2
+
+[1mdiff --git a/component/card/Card.js b/component/card/Card.js[m
+[1mindex 3643d15..012ecbd 100644[m
+[1m--- a/component/card/Card.js[m
+[1m+++ b/component/card/Card.js[m
+[36m@@ -1,7 +1,5 @@[m
+[31m-import clsx from 'clsx'[m
+ import Image from 'next/image'[m
+[31m-import React, { useState,usePrevious } from 'react'[m
+[31m-import  {exploreData} from '../../assets/data/exploreData'[m
+[32m+[m[32mimport React, { useState } from 'react'[m
+ import { LoadingPosts } from './LoadingCard'[m
+ import InfiniteScroll from "react-infinite-scroll-component";[m
+ import { useEffect } from 'react'[m
+[36m@@ -18,14 +16,12 @@[m [mconst totalCount = 11;[m
+ const [enviroment,setEnviroment] = useState([])[m
+ [m
+ [m
+[31m-// setLastName(enviroment[enviroment.length - 1]?.name)[m
+[31m-console.log(enviroment[enviroment.length - 1]?.name)[m
+[32m+[m
+ [m
+ const getProductList = () => {[m
+[31m-// let page_no = Math.ceil((enviroment.length / PAGE_LIMIT)) + 1;[m
+ [m
+[31m-  let page_no = enviroment[enviroment.length - 1]?.name[m
+ [m
+[32m+[m[32mlet page_no = enviroment[enviroment.length - 1]?.name[m
+ const queryParam = `/${PAGE_LIMIT}/${page_no ? page_no : "0" }`[m
+ const finalUrl = apiPath + queryParam[m
+ [m
+[36m@@ -34,6 +30,7 @@[m [maxios.get(finalUrl)[m
+   const resApi = res?.data[m
+   const mergeData = [...enviroment,...resApi][m
+   setEnviroment(mergeData)[m
+[32m+[m
+ })[m
+ .catch((err)=>{[m
+   console.error('error while loading products',err)[m
+[36m@@ -79,7 +76,7 @@[m [mconst fetchMoreData = () => {[m
+             {[m
+              enviroment && enviroment.length > 0 && enviroment.map((item,index) => {[m
+                 return ([m
+[31m-               <Link href={{[m
+[32m+[m[32m               <Link key={index} href={{[m
+                 pathname: '/spaces/unity',[m
+                 query: { [m
+                   type: 'explore',[m
+[36m@@ -87,7 +84,7 @@[m [mconst fetchMoreData = () => {[m
+                   name:item.name.toUpperCase()[m
+                  },[m
+                }}>[m
+[31m-                 <div key={index} className='col-md-6'>[m
+[32m+[m[32m                 <div className='col-md-6'>[m
+                    <div className='box-height-medium'>[m
+                     <Image priority src={item.img} layout='fill' alt='enviromentImages'/>[m
+                      <div className="exlusive-boxHeading">[m
+[1mdiff --git a/component/card/NewScard.js b/component/card/NewScard.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..89679e1[m
+[1m--- /dev/null[m
+[1m+++ b/component/card/NewScard.js[m
+[36m@@ -0,0 +1,38 @@[m
+[32m+[m[32mimport Image from 'next/image'[m
+[32m+[m[32mimport Link from 'next/link'[m
+[32m+[m[32mimport React from 'react'[m
+[32m+[m[32mimport { BiUpload } from 'react-icons/bi'[m
+[32m+[m
+[32m+[m[32mconst NewScard = ({data,name}) => {[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <div className='row'>[m
+[32m+[m[32m      {[m
+[32m+[m[32m        data && data.length > 0 && data.map((item)=>{[m
+[32m+[m[32m            return ([m
+[32m+[m[32m                <div key={item.id} className="col-md-4 newspaces">[m
+[32m+[m[32m               <Link href={{[m
+[32m+[m[32m                pathname: '/spaces/unity',[m
+[32m+[m[32m                query: {[m[41m [m
+[32m+[m[32m                  type: 'spaces',[m
+[32m+[m[32m                  id:item.id,[m
+[32m+[m[32m                  name:name.toUpperCase()[m
+[32m+[m[32m                 },[m
+[32m+[m[32m               }}>[m
+[32m+[m[32m                <div className="newSpacesCard-height">[m
+[32m+[m[32m                    <Image src={item.img} layout='fill' priority alt='newspaces' />[m
+[32m+[m[32m                    {[m
+[32m+[m[32m                        item.name === 'Upload Custom Space' && <span><BiUpload /></span>[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                </Link>[m[41m                  [m
+[32m+[m[41m               [m
+[32m+[m[32m                <h5>{item.name}</h5>[m
+[32m+[m[32m               </div>[m
+[32m+[m[32m            )[m
+[32m+[m[32m        })[m
+[32m+[m[32m     }[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m  )[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mexport default NewScard[m
+[1mdiff --git a/component/card/Newspace.js b/component/card/Newspace.js[m
+[1mindex 118839e..2e79d45 100644[m
+[1m--- a/component/card/Newspace.js[m
+[1m+++ b/component/card/Newspace.js[m
+[36m@@ -1,8 +1,16 @@[m
+ import Link from "next/link"[m
+ import { AiOutlineClose } from "react-icons/ai"[m
+ import { motion } from "framer-motion";[m
+[32m+[m[32mimport { useState } from "react";[m
+[32m+[m[32mimport NewScard from "./NewScard";[m
+[32m+[m[32mimport { useEffect } from "react";[m
+[32m+[m[32mimport { collection, onSnapshot, orderBy, query } from "firebase/firestore";[m
+[32m+[m[32mimport { db } from "../../firebase";[m
+ [m
+ const Newspace = () => {[m
+[32m+[m[32m  const [rightScreen,setRightScreeen] = useState('free')[m
+[32m+[m[32m  const [data,setData] = useState([])[m
+[32m+[m[32m  const [randomName,setrandomName] = useState('')[m
+   const dropIn = {[m
+     hidden: {[m
+       scale:0.7,[m
+[36m@@ -22,6 +30,54 @@[m [mconst Newspace = () => {[m
+       },[m
+     }[m
+   };[m
+[32m+[m
+[32m+[m
+[32m+[m[32m  useEffect(()=>{[m
+[32m+[m[32m    const newSpaces = query(collection(db,'demoSpace'), orderBy("timeStamp", "asc"));[m
+[32m+[m[32m        const unsub = onSnapshot([m
+[32m+[m[32m            newSpaces,[m
+[32m+[m[32m          (snapShot) => {[m
+[32m+[m[32m            let list = [];[m
+[32m+[m[32m            snapShot.docs.forEach((doc) => {[m
+[32m+[m[32m              list.push({[m[41m [m
+[32m+[m[32m                    id:doc.id,[m
+[32m+[m[32m                 ...doc.data()[m[41m [m
+[32m+[m[32m                });[m
+[32m+[m[32m            });[m
+[32m+[m[32m            setData(list);[m
+[32m+[m[32m          },[m
+[32m+[m[32m          (error) => {[m
+[32m+[m[32m            console.error('demospace not found ',error);[m
+[32m+[m[32m          }[m
+[32m+[m[32m        );[m
+[32m+[m[32m        return () => {[m
+[32m+[m[32m          unsub();[m
+[32m+[m[32m          const nameArray = ['Home','Bespoke Area','3D Scene','Lo-Fi Room','Virtuel Meeting',[m
+[32m+[m[32m          'Virtuel Room','Lo-Fi Room','Lo-Fi Place','Next Place','Immersive Room','Immersive Palace',[m
+[32m+[m[32m          'Hi-Fi Place','Hi-Fi Room','Hi-Fi Scene','Virtuel Meetup'][m
+[32m+[m[32m          const random = Math.floor(Math.random() * nameArray.length)[m
+[32m+[m[32m          setrandomName(nameArray[random]);[m
+[32m+[m[32m        };[m
+[32m+[m[41m        [m
+[32m+[m[32m  },[])[m
+[32m+[m
+[32m+[m[41m [m
+[32m+[m
+[32m+[m
+[32m+[m[32m  const freeHandle = () => {[m
+[32m+[m[32m    setRightScreeen('free')[m
+[32m+[m[32m  }[m
+[32m+[m[32m  const CollectiblesHandle = () => {[m
+[32m+[m[32m    setRightScreeen('collectibles')[m
+[32m+[m[32m  }[m
+[32m+[m[32m  const TemplatesHandle = () => {[m
+[32m+[m[32m    setRightScreeen('templates')[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+   return ([m
+     <motion.div[m
+     className="space-modal"[m
+[36m@@ -29,11 +85,46 @@[m [mconst Newspace = () => {[m
+     initial="hidden"[m
+     animate="visible"[m
+     >[m
+[31m-        <Link href='/spaces'>[m
+[32m+[m[32m    <Link href='/spaces'>[m
+         <div className="space-modal-close"><AiOutlineClose /></div>[m
+[31m-        </Link>[m
+[32m+[m[32m    </Link>[m
+[32m+[m[32m    <div className="space-modal-partication">[m
+[32m+[m[32m      <div className="space-modal-left">[m
+[32m+[m[32m         <div className="space-modal-left-mover">[m
+[32m+
