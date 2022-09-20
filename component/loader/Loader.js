@@ -25,6 +25,7 @@ const Loader = () => {
     background:#fff;
     height:100vh;
     width:100vw;
+    overflow:hidden;
    }
     .wrapper {
         position: absolute;

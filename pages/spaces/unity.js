@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AiFillHeart, AiOutlineHeart, AiOutlineLeft, AiOutlineRight, AiOutlineUserAdd } from "react-icons/ai"
 import { RiCameraFill } from "react-icons/ri"
 import {BsMicMute,BsMic} from 'react-icons/bs'
@@ -10,9 +10,10 @@ import {FiPlay} from 'react-icons/fi'
 import { IoExitOutline } from "react-icons/io5"
 import { useAuth } from "../../component/router/AuthContext"
 import { MdEmojiPeople } from "react-icons/md"
-import { BiDotsHorizontalRounded, BiHelpCircle } from "react-icons/bi"
+import { BiDotsHorizontalRounded, BiHelpCircle, BiPencil } from "react-icons/bi"
+import { Unity, useUnityContext } from "react-unity-webgl";
 
-const Unity = () => {
+const unity = () => {
  const { user } = useAuth()
  const {query} = useRouter()
  const [buttons,setButtons] = useState({
@@ -21,10 +22,24 @@ const Unity = () => {
     count:120,
     play:false
  })
- console.log(buttons)
+ const [nameInput,setNameInput] = useState('')
+ const [visibleName,setVisibleName] = useState(true)
+ const [pathId,setPathId] = useState(query.Id)
+ const [pathType,setPathType] = useState(query.type)
+ console.log({nameInput ,visibleName})
+
+
+ const { unityProvider,sendMessage,loadingProgression, isLoaded } = useUnityContext({
+  loaderUrl: "/Build/build.loader.js",
+  dataUrl: "/Build/build.data",
+  frameworkUrl: "/Build/build.framework.js",
+  codeUrl: "/Build/build.wasm",
+});
+
+
+
 
  const likeHandle = () => {
-    console.log(buttons.like)
     if(!buttons.like){
         setButtons(prev =>(
             {
@@ -51,12 +66,35 @@ const micHandle = () => {
 const playHandle = () => {
     setButtons(prev => ({...prev, play:!buttons.play}))
 } 
+const nameHandle = (e) =>{
+  setNameInput(e.target.value)
+}
+const nameClick = () => {
+  setNameInput( `${user.displayName}'s ${query.name}`)
+  setVisibleName(false)
+}
+const newName = `${user.displayName}'s ${query.name}`
+
+
+const unityModel = () => {
+  const unityData = {id:'5s1l4XbAG5DHtc8UyO51',type:'explore',}
+  const unityJson = JSON.stringify(unityData)
+  sendMessage("APICaller", "GameController", unityJson);
+}
+
+unityModel()
+
+
+   
+ 
+
+ 
 
   return (
     <div className="unity-scene-spaces">
         <div className="unity-interaction-container">
             <div className="unity-interactions">
-                <Link href='/spaces'>
+                <Link href={query.type === 'spaces' ? '/spaces?create=true' : '/spaces'}>
                  <div className="unity-leave">
                     <div className="unity-flex-child">
                        <span className="exit-rotate-unity"><IoExitOutline /> </span> <span>LEAVE</span>
@@ -64,7 +102,34 @@ const playHandle = () => {
                  </div>
                 </Link>
                 <div className="unity-people">
-                  <div className="unity-flex-child" data-name={query.name}>
+                  <div className="unity-flex-child">
+                  <div className="unity-people-after">
+                     {/* <div className="unity-people-name">
+                     { visibleName === true ?
+                       query.type === 'spaces' ?
+                       `${user.displayName}'s ${query.name}`
+                       : query.name
+                       : ''
+                     } 
+                     </div> */}
+                     {
+                       query.type === 'spaces' ?
+                      <input
+                      onClick={nameClick}
+                      style={{ width:newName.length *10 }}
+                      onChange={nameHandle}
+                       value={nameInput}
+                       type="text" /> 
+                       :query.name
+                    }
+                    {
+                       visibleName && <span className="unity-people-pencil"><BiPencil /></span>
+                    }
+                   
+                     
+                  </div>
+                  
+                 
                   <div className="bg-info rounded-circle image-space unity-avatar-border">
                     {
                       user.photoUrl ?
@@ -73,7 +138,6 @@ const playHandle = () => {
                       <Image src='/images/login-images/thumbnail.png' layout='fill'  alt="thumbnailImages" />
                     }
                   </div>
-                  {/* <h4>{query.name}</h4> */}
                   </div>  
                 </div>
                 <div className="unity-like">
@@ -125,13 +189,19 @@ const playHandle = () => {
             </div>
         </div>
         <div className="unity-scene">
-            
+        {!isLoaded && (
+        <p>Loading Application... {Math.round(loadingProgression * 100)}%</p>
+        )}
+        <Unity
+        unityProvider={unityProvider}
+        style={{ visibility: isLoaded ? "visible" : "hidden" }}
+        />
         </div>
     </div>
   )
 }
 
-export default Unity
+export default unity
 
 
 

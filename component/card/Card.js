@@ -1,7 +1,5 @@
-import clsx from 'clsx'
 import Image from 'next/image'
-import React, { useState,usePrevious } from 'react'
-import  {exploreData} from '../../assets/data/exploreData'
+import React, { useState } from 'react'
 import { LoadingPosts } from './LoadingCard'
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect } from 'react'
@@ -18,14 +16,12 @@ const totalCount = 11;
 const [enviroment,setEnviroment] = useState([])
 
 
-// setLastName(enviroment[enviroment.length - 1]?.name)
-console.log(enviroment[enviroment.length - 1]?.name)
+
 
 const getProductList = () => {
-// let page_no = Math.ceil((enviroment.length / PAGE_LIMIT)) + 1;
 
-  let page_no = enviroment[enviroment.length - 1]?.name
 
+let page_no = enviroment[enviroment.length - 1]?.name
 const queryParam = `/${PAGE_LIMIT}/${page_no ? page_no : "0" }`
 const finalUrl = apiPath + queryParam
 
@@ -34,6 +30,7 @@ axios.get(finalUrl)
   const resApi = res?.data
   const mergeData = [...enviroment,...resApi]
   setEnviroment(mergeData)
+
 })
 .catch((err)=>{
   console.error('error while loading products',err)
@@ -79,7 +76,7 @@ const fetchMoreData = () => {
             {
              enviroment && enviroment.length > 0 && enviroment.map((item,index) => {
                 return (
-               <Link href={{
+               <Link key={index} href={{
                 pathname: '/spaces/unity',
                 query: { 
                   type: 'explore',
@@ -87,7 +84,7 @@ const fetchMoreData = () => {
                   name:item.name.toUpperCase()
                  },
                }}>
-                 <div key={index} className='col-md-6'>
+                 <div className='col-md-6'>
                    <div className='box-height-medium'>
                     <Image priority src={item.img} layout='fill' alt='enviromentImages'/>
                      <div className="exlusive-boxHeading">

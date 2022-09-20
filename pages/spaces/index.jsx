@@ -116,11 +116,13 @@ const Space = () => {
 
   return (
     <>
+    {query.create ?
+      <div className="newSpace">
+      <Newspace />
+      </div>
+     :
       <div className="container">
          <div className="space-container">
-          {
-            query.create && <Newspace />
-          }
           <div className="modal-button-conatiner">
             <div onClick={modalOpen} className="modal-space-button">
                   <div className="bg-info rounded-circle image-space">
@@ -225,7 +227,9 @@ const Space = () => {
                     {
                     !arrowVisible && 
                     <div  className="spaces-new-flex">
-                      <Link  href={{
+                      <Link 
+                       rel="preload"
+                       href={{
                                pathname: '/spaces',
                                query: { create: 'true' },
                              }}>
@@ -274,6 +278,7 @@ const Space = () => {
         
         
       </div>
+      }
     </>
   )
 }
