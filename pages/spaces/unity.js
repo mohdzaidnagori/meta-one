@@ -188,7 +188,7 @@ unityModel()
             </div>
             </div>
         </div>
-        <div className="unity-scene">
+        <div className="unity-scene git s">
         {!isLoaded && (
         <p>Loading Application... {Math.round(loadingProgression * 100)}%</p>
         )}
