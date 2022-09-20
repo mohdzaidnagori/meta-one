@@ -58,17 +58,23 @@ const fetchMoreData = () => {
   return (
 
       
-      <InfiniteScroll
+      <div 
+      id="scrollableDiv"
+      className='infinite-scroll-div'
+      style={{
+        overflow: 'auto',
+      }}>
+        <InfiniteScroll
           dataLength={enviroment.length}
           next={fetchMoreData}
           hasMore={enviroment.length < totalCount }
           loader={<LoadingPosts />}
-          height={350}
           endMessage={
-            <p style={{ textAlign: "center",padding:"10px 0px" }}>
+            <p style={{ textAlign: "center",padding:"10px 0px",color:'#000' }}>
               <b>Yay! You have seen it all</b>
             </p>
           }
+          scrollableTarget="scrollableDiv"
         >
          
          <div className="infine-scroll-padding">
@@ -100,7 +106,8 @@ const fetchMoreData = () => {
             }
              </div>
          </div>
-             </InfiniteScroll>       
+             </InfiniteScroll>   
+      </div>    
        
   )
 }

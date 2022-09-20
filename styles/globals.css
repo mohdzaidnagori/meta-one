@@ -14,6 +14,7 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background-color: #fff !important;
 }
 
 
@@ -48,11 +49,13 @@ a{
 .login-box {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   height: 100%;
   row-gap: 10px;
   padding: 5px 0;
   position: relative;
+  color: #000;
 }
 .back-arrow{
   position: absolute;
@@ -114,6 +117,8 @@ transform: translate(-50%,-50%);
   border-radius: 10px;
   padding-left:10px;
   font-size: 15px;
+  background-color: #fff;
+  color: #000;
 }
 .input-text::placeholder{
   color: black;
@@ -296,6 +301,7 @@ position: relative;
   align-items: center;
   flex-direction: column;
   position: relative;
+  background-color: #fff;
   
 
  }
@@ -318,6 +324,7 @@ position: relative;
      column-gap: 10px;
      border-radius: 30px;
      background-color: #fff;
+     color: #000;
      
 }
 .image-space{
@@ -329,6 +336,7 @@ position: relative;
 }
 .modal-space-button h5 {
   margin-bottom: 2px;
+  color: #000;
 }
 .modal-space-open{
   position: absolute;
@@ -400,6 +408,7 @@ position: relative;
 .spaces-heading > h2 {
   font-weight: 600;
   font-size: 30px;
+  color: #000;
 }
 .spaces-menu{
   display: flex;
@@ -427,7 +436,7 @@ position: relative;
  align-items: flex-start;
  line-height: 45px;
  border-radius: 45px;
- /* transition: all ease-in 0.1s; */
+ color: #000;
 
 }
 .spaces-switch .switch{
@@ -443,28 +452,8 @@ position: relative;
 }
 .spaces-explore-small{
   width: 100%;
-  overflow: auto;
-  
-}
-.infinite-scroll-component::-webkit-scrollbar,.spaces-explore-small::-webkit-scrollbar {
-  width: 10px;
-  border-radius: 10px;
-}
-.infinite-scroll-component::-webkit-scrollbar-track,.spaces-explore-small::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  height: 20px;
 }
 
-/* Handle */
-.infinite-scroll-component::-webkit-scrollbar-thumb,.spaces-explore-small::-webkit-scrollbar-thumb {
-  background: #888;
-  height: 20px;
-}
-
-/* Handle on hover */
-.infinite-scroll-component::-webkit-scrollbar-thumb:hover,.spaces-explore-small::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
 .exlusive-boxHeading-loading {
   display: flex;
   justify-content: flex-end;
@@ -511,6 +500,46 @@ position: relative;
     background-position: 450px 0px;
   }
 }
+
+.infinite-scroll-div{
+  scrollbar-color: #d4aa70 #e4e4e4;
+  height: 500px;
+}
+@media(max-width:991px){
+  .infinite-scroll-div{
+    height: 300px;
+  }
+}
+@media(max-width:1224px){
+  .infinite-scroll-div{
+    height: 360px;
+  }
+}
+@media(max-width:1524px){
+  .infinite-scroll-div{
+    height: 400px;
+  }
+}
+
+.infinite-scroll-div::-webkit-scrollbar {
+  width: 18px;
+}
+.infinite-scroll-div::-webkit-scrollbar-thumb:hover {
+  background-color: #5749d2;
+}
+
+.infinite-scroll-div::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+  border-radius: 100px;
+}
+
+.infinite-scroll-div::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 100px;
+  background-color: #000;
+  background-clip: content-box;
+}
+
 .infine-scroll-padding{
   margin: 0px 100px;
   padding-top: 15px;
@@ -540,6 +569,7 @@ position: relative;
   align-items: center;
   padding: 0px 10px;
   transition: ease all 0.3s;
+  color: #000;
 
 }
 .spaces-search:hover{
@@ -627,6 +657,7 @@ position: relative;
   height: 35px;
   border-radius: 35px;
   background-color: #fff;
+  color: #000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -657,6 +688,7 @@ position: relative;
 .space-modal-left-mover h3{
   font-size: 27px;
   padding-bottom: 10px;
+  color: #000;
 }
 
 .space-modal-left-mover .newSpace-switch > p{

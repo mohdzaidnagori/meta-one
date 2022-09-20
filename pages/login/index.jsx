@@ -94,10 +94,10 @@ const Index = () => {
     <> 
     <Toaster />
     <div className="row login-container">
-    <div className="col-md-8 videoContainer">
+    <div className="col-md-8 col-lg-9 videoContainer">
        <LoginLeft url={'video/1.mp4'} />
       </div>
-        <div className="col-md-4 padding-0">
+        <div className="col-md-4 col-lg-3 padding-0">
           <div className="login-box">
             <div className="logo-wrapper">
             <Image src='/images/login-images/logo.png' width={200} height={200} alt="logoImage" />

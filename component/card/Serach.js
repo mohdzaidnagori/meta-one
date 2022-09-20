@@ -4,7 +4,15 @@ import React from 'react'
 
 const Serach = ({data}) => {
   return (
-    <div className='infine-scroll-padding space-bottom-height'>
+    <div 
+    id="scrollableDiv"
+    className='infinite-scroll-div'
+     style={{
+      height: 500,
+      overflow: 'auto',
+    }}
+    >
+      <div className='infine-scroll-padding'>
        <div className="row g-3" style={{paddingBottom:'30px'}}>
        {
           data.map((item,index) => {
@@ -30,6 +38,7 @@ const Serach = ({data}) => {
             )
            })
          }
+       </div>
        </div>
     </div>
   )

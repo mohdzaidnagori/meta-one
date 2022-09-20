@@ -6,35 +6,21 @@ import { useAuth } from '../router/AuthContext'
 import { LoadingPosts } from './LoadingCard'
 
 const Userspaces = ({userData ,loading}) => {
-    // const [userSpace,setUserSpace] = useState(
-    //     {
-    //       userspaces :[],
-    //       loading:true
-    //     }
-    //     )
-    // const { user } = useAuth()
 
-    // const apiPath = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/userSpaces/${user.uid}`
-
-    // axios.get(apiPath)
-    // .then((res)=>{
-    //     setUserSpace(
-    //         {
-    //          userspaces:res.data,
-    //          loading:false
-    //         }
-    //     )
-    // })
-    // .catch((error)=>{
-    //     console.error('error',error)
-    // })
     console.log(userData.length > 0 ? 'data  avil' : 'data not avail')
 
   return (
     <>
     {
      !loading ?
-    <div className="infine-scroll-padding space-bottom-height">
+   <div 
+      id="scrollableDiv"
+      className='infinite-scroll-div'
+      style={{
+        height: 500,
+        overflow: 'auto',
+      }}>
+      <div className='infine-scroll-padding'>
     {
      userData.length > 0 ? 
      <div className="row g-3" style={{paddingBottom:'30px'}}>
@@ -67,6 +53,7 @@ const Userspaces = ({userData ,loading}) => {
         : 
         <div className='No-available-data'>No Data Available</div>
     }
+    </div>
     </div>
      : <LoadingPosts />
     }
