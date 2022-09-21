@@ -17,7 +17,6 @@ const Userspaces = ({userData ,loading}) => {
       id="scrollableDiv"
       className='infinite-scroll-div'
       style={{
-        height: 500,
         overflow: 'auto',
       }}>
       <div className='infine-scroll-padding'>

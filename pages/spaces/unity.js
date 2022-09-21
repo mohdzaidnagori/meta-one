@@ -12,29 +12,32 @@ import { useAuth } from "../../component/router/AuthContext"
 import { MdEmojiPeople } from "react-icons/md"
 import { BiDotsHorizontalRounded, BiHelpCircle, BiPencil } from "react-icons/bi"
 import { Unity, useUnityContext } from "react-unity-webgl";
+import { useRef } from "react"
 
 const unity = () => {
  const { user } = useAuth()
- const {query} = useRouter()
+ const query = useRouter()
+ const span = useRef();
  const [buttons,setButtons] = useState({
     like:false,
     mic:false,
     count:120,
     play:false
  })
- const [nameInput,setNameInput] = useState('')
+
  const [visibleName,setVisibleName] = useState(true)
  const [pathId,setPathId] = useState(query.Id)
  const [pathType,setPathType] = useState(query.type)
- console.log({nameInput ,visibleName})
+ const [pathName,setPathName] = useState('')
+ const [inputName,setInputName] = useState(user.displayName)
+ const [width, setWidth] = useState(0);
 
-
- const { unityProvider,sendMessage,loadingProgression, isLoaded } = useUnityContext({
-  loaderUrl: "/Build/build.loader.js",
-  dataUrl: "/Build/build.data",
-  frameworkUrl: "/Build/build.framework.js",
-  codeUrl: "/Build/build.wasm",
-});
+//  const { unityProvider,sendMessage,loadingProgression, isLoaded } = useUnityContext({
+//   loaderUrl: "/Build/build.loader.js",
+//   dataUrl: "/Build/build.data",
+//   frameworkUrl: "/Build/build.framework.js",
+//   codeUrl: "/Build/build.wasm",
+// });
 
 
 
@@ -67,22 +70,33 @@ const playHandle = () => {
     setButtons(prev => ({...prev, play:!buttons.play}))
 } 
 const nameHandle = (e) =>{
-  setNameInput(e.target.value)
+  setInputName(e.target.value)
 }
 const nameClick = () => {
-  setNameInput( `${user.displayName}'s ${query.name}`)
   setVisibleName(false)
 }
-const newName = `${user.displayName}'s ${query.name}`
 
 
-const unityModel = () => {
-  const unityData = {id:'5s1l4XbAG5DHtc8UyO51',type:'explore',}
-  const unityJson = JSON.stringify(unityData)
-  sendMessage("APICaller", "GameController", unityJson);
-}
 
-unityModel()
+// const unityModel = () => {
+//   const unityData = {id:'5s1l4XbAG5DHtc8UyO51',type:'explore',}
+//   const unityJson = JSON.stringify(unityData)
+//   sendMessage("APICaller", "GameController", unityJson);
+// }
+useEffect(()=>{
+    if(!query.isReady) return;
+    setPathName(query.query.name)
+    setInputName(`${user.displayName} ${query.query.name}`)
+    setWidth(span.current.offsetWidth);
+    // codes using router.query
+
+}, [query.isReady,inputName]);
+console.log(width)
+
+
+
+
+
 
 
    
@@ -94,7 +108,7 @@ unityModel()
     <div className="unity-scene-spaces">
         <div className="unity-interaction-container">
             <div className="unity-interactions">
-                <Link href={query.type === 'spaces' ? '/spaces?create=true' : '/spaces'}>
+                <Link href={query.query.type === 'spaces' ? '/spaces?create=true' : '/spaces'}>
                  <div className="unity-leave">
                     <div className="unity-flex-child">
                        <span className="exit-rotate-unity"><IoExitOutline /> </span> <span>LEAVE</span>
@@ -113,14 +127,17 @@ unityModel()
                      } 
                      </div> */}
                      {
-                       query.type === 'spaces' ?
+                       query.query.type === 'spaces' ?
+                       <>
+                       <span id="hide" style={{position: 'absolute',opacity: '0'}} ref={span}>{inputName}</span>
                       <input
                       onClick={nameClick}
-                      style={{ width:newName.length *10 }}
+                      style={{ width }}
                       onChange={nameHandle}
-                       value={nameInput}
+                       value={inputName}
                        type="text" /> 
-                       :query.name
+                       </>
+                       :query.query.name
                     }
                     {
                        visibleName && <span className="unity-people-pencil"><BiPencil /></span>
@@ -188,14 +205,14 @@ unityModel()
             </div>
             </div>
         </div>
-        <div className="unity-scene git s">
-        {!isLoaded && (
+        <div className="unity-scene">
+        {/* {!isLoaded && (
         <p>Loading Application... {Math.round(loadingProgression * 100)}%</p>
         )}
         <Unity
         unityProvider={unityProvider}
         style={{ visibility: isLoaded ? "visible" : "hidden",width:'100%',height:'100%',overflow:'hidden' }}
-        />
+        /> */}
         </div>
     </div>
   )

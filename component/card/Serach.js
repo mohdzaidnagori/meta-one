@@ -8,7 +8,6 @@ const Serach = ({data}) => {
     id="scrollableDiv"
     className='infinite-scroll-div'
      style={{
-      height: 500,
       overflow: 'auto',
     }}
     >

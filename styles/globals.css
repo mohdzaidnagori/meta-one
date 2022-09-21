@@ -503,23 +503,23 @@ position: relative;
 
 .infinite-scroll-div{
   scrollbar-color: #d4aa70 #e4e4e4;
-  height: 500px;
+  height: 50vh;
 }
-@media(max-width:991px){
+/* @media(max-width:991px){
   .infinite-scroll-div{
     height: 300px;
   }
 }
-@media(max-width:1224px){
+@media(max-width:1380px){
   .infinite-scroll-div{
-    height: 360px;
+    height: 260px;
   }
 }
 @media(max-width:1524px){
   .infinite-scroll-div{
     height: 400px;
   }
-}
+} */
 
 .infinite-scroll-div::-webkit-scrollbar {
   width: 18px;
