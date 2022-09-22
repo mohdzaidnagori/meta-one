@@ -9,7 +9,7 @@ const NewScard = ({data,name}) => {
       {
         data && data.length > 0 && data.map((item)=>{
             return (
-                <div key={item.id} className="col-md-4 newspaces">
+                <div key={item.id} className="col-md-6 col-lg-4 newspaces">
                <Link href={{
                 pathname: '/spaces/unity',
                 query: { 

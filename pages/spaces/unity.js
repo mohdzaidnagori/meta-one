@@ -13,6 +13,7 @@ import { MdEmojiPeople } from "react-icons/md"
 import { BiDotsHorizontalRounded, BiHelpCircle, BiPencil } from "react-icons/bi"
 import { Unity, useUnityContext } from "react-unity-webgl";
 import { useRef } from "react"
+import { Unityloader } from "../../component/loader/Unityloader"
 
 const unity = () => {
  const { user } = useAuth()
@@ -25,19 +26,19 @@ const unity = () => {
     play:false
  })
 
- const [visibleName,setVisibleName] = useState(true)
  const [pathId,setPathId] = useState(query.Id)
  const [pathType,setPathType] = useState(query.type)
  const [pathName,setPathName] = useState('')
- const [inputName,setInputName] = useState(user.displayName)
- const [width, setWidth] = useState(0);
+ const [inputName,setInputName] = useState('')
 
-//  const { unityProvider,sendMessage,loadingProgression, isLoaded } = useUnityContext({
-//   loaderUrl: "/Build/build.loader.js",
-//   dataUrl: "/Build/build.data",
-//   frameworkUrl: "/Build/build.framework.js",
-//   codeUrl: "/Build/build.wasm",
-// });
+
+ const { unityProvider,sendMessage,loadingProgression, isLoaded } = useUnityContext({
+  loaderUrl: "/Build/build.loader.js",
+  dataUrl: "/Build/build.data",
+  frameworkUrl: "/Build/build.framework.js",
+  codeUrl: "/Build/build.wasm",
+});
+const loading = Math.round(loadingProgression * 100)
 
 
 
@@ -72,26 +73,24 @@ const playHandle = () => {
 const nameHandle = (e) =>{
   setInputName(e.target.value)
 }
-const nameClick = () => {
-  setVisibleName(false)
+
+
+
+
+const unityModel = () => {
+  const unityData = {id:'5s1l4XbAG5DHtc8UyO51',type:'explore',}
+  const unityJson = JSON.stringify(unityData)
+  sendMessage("APICaller", "GameController", unityJson);
 }
 
-
-
-// const unityModel = () => {
-//   const unityData = {id:'5s1l4XbAG5DHtc8UyO51',type:'explore',}
-//   const unityJson = JSON.stringify(unityData)
-//   sendMessage("APICaller", "GameController", unityJson);
-// }
+unityModel()
 useEffect(()=>{
     if(!query.isReady) return;
     setPathName(query.query.name)
-    setInputName(`${user.displayName} ${query.query.name}`)
-    setWidth(span.current.offsetWidth);
+    setInputName(`${user.displayName}'s ${query.query.name}`)
     // codes using router.query
+}, [query.isReady]);
 
-}, [query.isReady,inputName]);
-console.log(width)
 
 
 
@@ -117,30 +116,28 @@ console.log(width)
                 </Link>
                 <div className="unity-people">
                   <div className="unity-flex-child">
-                  <div className="unity-people-after">
-                     {/* <div className="unity-people-name">
-                     { visibleName === true ?
-                       query.type === 'spaces' ?
-                       `${user.displayName}'s ${query.name}`
-                       : query.name
-                       : ''
-                     } 
-                     </div> */}
+                  <div className="unity-people-after" style=
+                  {{
+                    width:query.query.type === 'explore' ? 'max-content' : '100%'
+                  }}>
                      {
                        query.query.type === 'spaces' ?
-                       <>
-                       <span id="hide" style={{position: 'absolute',opacity: '0'}} ref={span}>{inputName}</span>
-                      <input
-                      onClick={nameClick}
-                      style={{ width }}
+             
+                     
+                       <form>
+                         <input
+                      style={{ width: `${inputName.length}ch`,textAlign:'center'}}
                       onChange={nameHandle}
                        value={inputName}
-                       type="text" /> 
-                       </>
+                       type="text"
+                       data-icon='zaid' /> 
+                       </form>
+
                        :query.query.name
                     }
                     {
-                       visibleName && <span className="unity-people-pencil"><BiPencil /></span>
+                        query.query.type === 'spaces' &&
+                       <span className="unity-people-pencil" style={{width: `${inputName.length}ch`}}><BiPencil /></span>
                     }
                    
                      
@@ -205,16 +202,18 @@ console.log(width)
             </div>
             </div>
         </div>
-        <div className="unity-scene">
-        {/* {!isLoaded && (
-        <p>Loading Application... {Math.round(loadingProgression * 100)}%</p>
+        <div className="unity-scene ghhl">
+        {!isLoaded && (
+        <Unityloader loading={loading} envirometname={query.query.name} />
         )}
-        <Unity
+        < Unity
         unityProvider={unityProvider}
         style={{ visibility: isLoaded ? "visible" : "hidden",width:'100%',height:'100%',overflow:'hidden' }}
-        /> */}
-        </div>
+        />
+        </div> 
+       
     </div>
+  
   )
 }
 

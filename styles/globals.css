@@ -52,11 +52,12 @@ a{
   justify-content: center;
   flex-direction: column;
   height: 100%;
+  width: 100%;
   row-gap: 10px;
-  padding: 5px 0;
   position: relative;
   color: #000;
 }
+
 .back-arrow{
   position: absolute;
   top: 20px;
@@ -83,7 +84,7 @@ top: 50%;
 transform: translate(-50%,-50%);
 }
 .login-form{
-  width: 300px;
+  width: 100%;
   margin-top: 20px;
   display: flex;
   justify-content: center;
@@ -101,6 +102,15 @@ transform: translate(-50%,-50%);
   margin-bottom: 20px;
   position: relative;
 }
+@media(min-width:762px) and (max-width:1286px){
+  .input-wrapper{
+    width: 230px;
+  }
+  .googleButton{
+    width: 230px;
+  }
+}
+
 .user-icon{
   flex: 0.2;
   display: flex;
@@ -717,13 +727,14 @@ position: relative;
 .newSpacesCard-height{
   position: relative;
   width: 100%;
-  height: 180px;
+  height: 20vh;
   border-radius: 10px;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .newSpacesCard-height > span {
   position: absolute;
   font-size: 45px;
@@ -822,13 +833,11 @@ position: relative;
 
 .unity-people-pencil {
   position: absolute;
-  width: 30px;
   top: 0px;
   left: 100%;
-  margin-left:20px;
-  display: none;
+  text-align: center;
 }
-.unity-interactions .unity-people .unity-flex-child .unity-people-after > input{
+.unity-interactions .unity-people .unity-flex-child .unity-people-after > form > input{
   position: absolute;
   width: 100%;
   top: 0px;
@@ -841,13 +850,14 @@ position: relative;
   background-color: transparent;
   color: #fff;
 }
-.unity-interactions .unity-people .unity-flex-child .unity-people-after > input:focus-visible {
+
+.unity-interactions .unity-people .unity-flex-child .unity-people-after > form > input:focus-visible {
     outline: 1px solid #fff;
 }
-.unity-interactions .unity-people .unity-flex-child .unity-people-after:hover
+/* .unity-interactions .unity-people .unity-flex-child .unity-people-after:hover
  .unity-people-pencil{
   display: block;
-}
+} */
 
 
 .unity-avatar-border{
