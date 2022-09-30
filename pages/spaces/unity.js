@@ -15,6 +15,7 @@ import { Unity, useUnityContext } from "react-unity-webgl";
 import { useRef } from "react"
 import { Unityloader } from "../../component/loader/Unityloader"
 import Addcontent from "../../component/unity/Addcontent"
+import axios from "axios"
 
 const unity = () => {
  const { user } = useAuth()
@@ -96,6 +97,23 @@ useEffect(()=>{
     if(!query.isReady) return;
     setPathName(query.query.name)
     setInputName(`${user.displayName}'s ${query.query.name}`)
+    const url = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/addnewSpacesInUser`
+    const spaceObj = {
+      newSpacesID:query.query.id,
+      userID:user.uid
+    }
+    const userFetch = () => {
+      console.log('ok')
+    }
+    // axios.post(url,spaceObj)
+    // .then((res) => {
+    //   console.log('suscess')
+    // })
+    // .catch((error)=>{
+    //   console.error(error)
+    // })
+    userFetch()
+    console.log('render')
     // codes using router.query
 }, [query.isReady]);
 
@@ -122,7 +140,9 @@ const openModal = () => {
        <div className="newSpace">
         <Addcontent action={openModal} />
       </div> }  
-        <div className="unity-interaction-container">
+        {
+           isLoaded && (
+            <div className="unity-interaction-container">
             <div className="unity-interactions">
                 <Link href={query.query.type === 'spaces' ? '/spaces?create=true' : '/spaces'}>
                  <div className="unity-leave">
@@ -232,6 +252,8 @@ const openModal = () => {
             </div>
             </div>
         </div>
+           )
+        }
         <div className="unity-scene">
         {!isLoaded && (
         <Unityloader loading={loading} envirometname={query.query.name} />

@@ -10,7 +10,7 @@ import Link from 'next/link'
 
 const Card = () => {
 
-const apiPath = 'https://asia-south1-metaone-ec336.cloudfunctions.net/api/spaces'
+const apiPath = 'https://asia-south1-metaone-ec336.cloudfunctions.net/api/newSpaces'
 const PAGE_LIMIT = 2;
 const totalCount = 11;
 const [enviroment,setEnviroment] = useState([])

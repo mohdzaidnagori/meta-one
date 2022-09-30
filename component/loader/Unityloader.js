@@ -56,6 +56,7 @@ export const Unityloader = ({loading,envirometname}) => {
             align-items:center;
             flex-direction:column;
             overflow:hidden;
+            z-index:1000;
            }
         .loader--ripple {
          position: relative;

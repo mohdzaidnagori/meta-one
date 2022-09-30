@@ -2,7 +2,7 @@ import Image from "next/image"
 import { useAuth } from "../../component/router/AuthContext"
 import { modalLink } from "../../assets/data/modalLink"
 import Link from "next/link"
-import { auth } from "../../firebase"
+import { auth, db } from "../../firebase"
 import {  useState } from "react"
 import { motion } from "framer-motion";
 import { IoEarth } from "react-icons/io5";
@@ -15,6 +15,8 @@ import axios from "axios"
 import Userspaces from "../../component/card/Userspaces"
 import { useRouter } from "next/router"
 import Newspace from "../../component/card/Newspace"
+import { collection, where, getDocs, onSnapshot } from "firebase/firestore";
+import { query as fireQuery } from 'firebase/firestore';
 
 
 
@@ -71,24 +73,35 @@ const Space = () => {
   const explorehandle = () => {
     setisSwitch('true')
   }
-  const spacehandle = () => {
+  const spacehandle = async () => {
     setisSwitch('false')
+    console.log(user.uid)
+    const q = fireQuery(collection(db, "spaces"), where("userID", "==", user.uid));
+    const unsub = onSnapshot(
+      q,
+    (snapShot) => {
+      let list = [];
+      snapShot.docs.forEach((doc) => {
+        list.push({ 
+            listid:doc.id,
+           ...doc.data() 
 
-    const apiPath = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/userSpaces/${user.uid}`
+          });
+      });
+      // setData(list);
+      setUserSpace({
+        userspaces:list,
+        loading:false
+      })
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
 
-    axios.get(apiPath)
-    .then((res)=>{
-        setUserSpace(
-            {
-             userspaces:res.data,
-             loading:false
-            }
-        )
-    })
-    .catch((error)=>{
-        console.error('error',error)
-    })
+   
   }
+  
   const serachhandle = (e) => {
     e.preventDefault()
     if(searchData === ''){
