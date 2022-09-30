@@ -6,7 +6,7 @@ import { AiOutlineMail} from "react-icons/ai";
 import toast, { Toaster } from 'react-hot-toast';
 import validator from 'validator'
 import { useDispatch } from 'react-redux';
-import { loginFailure, loginStart, loginSuccess} from '../../component/redux/userSlice';
+import { loginFailure, loginStart, loginSuccess} from '../../component/redux/userslice';
 import {auth,provider,signInWithEmailAndPassword} from '../../firebase';
 import LoginLeft from '../../component/login-left/Loginleft';
 import Link from 'next/link'

@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import Link from "next/link";
 import validator from 'validator'
 import { useDispatch } from "react-redux";
-import { loginFailure, loginStart, loginSuccess } from "../../component/redux/UserSlice";
+import { loginFailure, loginStart, loginSuccess } from "../../component/redux/userslice";
 import { useAuth } from "../../component/router/AuthContext";
 
 const Register = () => {
