@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import Link from "next/link";
 import validator from 'validator'
 import { useDispatch } from "react-redux";
-import { loginFailure, loginStart, loginSuccess } from "../../component/redux/userslice";
+// import { loginFailure, loginStart, loginSuccess } from "../../component/redux/userslice";
 import { useAuth } from "../../component/router/AuthContext";
 
 const Register = () => {
@@ -21,7 +21,7 @@ const Register = () => {
   const [cpasswordType,setcPasswordType] = useState('password')
 
   const router = useRouter()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   const registerHandle =  (e) => {
     e.preventDefault()
@@ -44,7 +44,7 @@ const Register = () => {
       if(password != cpassword){
         return toast.error('password and confirm password is not same')
       }
-       dispatch(loginStart())
+      //  dispatch(loginStart())
        createUserWithEmailAndPassword(auth,email,password).then(
         (userAuth) => {
              sendEmailVerification(userAuth.user)
@@ -53,15 +53,15 @@ const Register = () => {
                 photoURL:'',
                 emailVerified:userAuth.user.emailVerified
             }).then(
-                () => {
-                    dispatch(loginSuccess({
-                        email:userAuth.user.email,
-                        uid:userAuth.user.uid,
-                        displayName:name,
-                        photoURL:'',
-                        emailVerified:userAuth.user.emailVerified
-                    }))
-                }
+                // () => {
+                //     dispatch(loginSuccess({
+                //         email:userAuth.user.email,
+                //         uid:userAuth.user.uid,
+                //         displayName:name,
+                //         photoURL:'',
+                //         emailVerified:userAuth.user.emailVerified
+                //     }))
+                // }
             )
             router.push('/login/verified')
         }
@@ -70,7 +70,7 @@ const Register = () => {
       ).catch(
         (error) => {
           alert(error.message)
-          dispatch(loginFailure())
+          // dispatch(loginFailure())
         }
          
      )

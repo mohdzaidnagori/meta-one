@@ -6,7 +6,7 @@ import { AiOutlineMail} from "react-icons/ai";
 import toast, { Toaster } from 'react-hot-toast';
 import validator from 'validator'
 import { useDispatch } from 'react-redux';
-import { loginFailure, loginStart, loginSuccess} from '../../component/redux/userslice';
+// import { loginFailure, loginStart, loginSuccess} from '../../component/redux/userslice';
 import {auth,provider,signInWithEmailAndPassword} from '../../firebase';
 import LoginLeft from '../../component/login-left/Loginleft';
 import Link from 'next/link'
@@ -31,7 +31,7 @@ const Index = () => {
   const [email,setEmail] =  useState('')
   const [password,setPassword] =  useState('')
 
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
 
   const hideShowPassword = () => {
@@ -67,22 +67,22 @@ const Index = () => {
     if (!validator.isEmail(email)) {
       return toast.error('invalid email address')
     }
-    dispatch(loginStart())
+    // dispatch(loginStart())
     signInWithEmailAndPassword(auth,email,password).
     then((userAuth) => {
-      dispatch(
-        loginSuccess({
-        email:userAuth.user.email,
-        uid:userAuth.user.uid,
-        displayName:userAuth.user.displayName,
-        photoUrl:userAuth.user.photoURL,
-        emailVerified:userAuth.user.emailVerified
-      })
-      )
+      // dispatch(
+      //   loginSuccess({
+      //   email:userAuth.user.email,
+      //   uid:userAuth.user.uid,
+      //   displayName:userAuth.user.displayName,
+      //   photoUrl:userAuth.user.photoURL,
+      //   emailVerified:userAuth.user.emailVerified
+      // })
+      // )
     })
     .catch((err) =>{
       toast.error('email or password invalid')
-      dispatch(loginFailure())
+      // dispatch(loginFailure())
     })
   }
  

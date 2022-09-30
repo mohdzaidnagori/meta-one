@@ -1,8 +1,8 @@
 // add bootstrap css 
 import 'bootstrap/dist/css/bootstrap.css'
 import '../styles/globals.css'
-import { store } from '../component/redux/store'
-import { Provider } from 'react-redux'
+// import { store } from '../component/redux/store'
+// import { Provider } from 'react-redux'
 import React, { useState } from 'react';
 import Router, { useRouter } from 'next/router'
 import TopBarProgress from "react-topbar-progress-indicator"
@@ -28,7 +28,6 @@ const router = useRouter()
 
 
   return (
-  <Provider store={store}>
     <AuthContextProvider>
    { progress && <Loader /> }
     {noAuthRequired.includes(router.pathname) ? (
@@ -39,7 +38,6 @@ const router = useRouter()
     </ProtectedRouter>
   )}
   </AuthContextProvider>
-   </Provider>
   )
 }
 
