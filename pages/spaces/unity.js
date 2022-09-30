@@ -47,6 +47,7 @@ const loading = Math.round(loadingProgression * 100)
 
 
 
+
  const likeHandle = () => {
     if(!buttons.like){
         setButtons(prev =>(
@@ -87,7 +88,7 @@ const nameHandle = (e) =>{
 
 
 const unityModel = () => {
-  const unityData = {id:'5s1l4XbAG5DHtc8UyO51',type:'explore',}
+  const unityData = {_id:'5s1l4XbAG5DHtc8UyO51',_type:'explore',}
   const unityJson = JSON.stringify(unityData)
   sendMessage("APICaller", "GameController", unityJson);
 }
@@ -252,12 +253,13 @@ const openModal = () => {
             </div>
             </div>
         </div>
-           )
+            )
         }
         <div className="unity-scene">
         {!isLoaded && (
         <Unityloader loading={loading} envirometname={query.query.name} />
-        )}
+         )}
+        
         < Unity
         unityProvider={unityProvider}
         style={{ visibility: isLoaded ? "visible" : "hidden",width:'100%',height:'100%',overflow:'hidden' }}

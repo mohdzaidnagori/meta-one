@@ -645,7 +645,7 @@ position: relative;
   width: 90%;
   height: 90%;
   background-color: #fff;
-  z-index: 1000;
+  z-index: 200;
   border-radius: 20px;
   box-shadow: 0 13.689px 27.3779px rgb(0 0 0 / 40%);
 }
@@ -757,15 +757,15 @@ position: relative;
   width: 100%;
   height: 100vh;
   position: relative;
+  overflow: hidden;
 }
 .unity-interaction-container{
   position: absolute;
-  background-color:transparent;
   top: 0;
   left: 0;
+  background-color: green;
   width: 100%;
   height: 100%;
-  z-index: 10;
   display: grid;
   align-content: space-between;
   color: #fff;
@@ -776,6 +776,9 @@ position: relative;
   align-items: center;
   margin: 15px 30px;
   padding: 20px 0px;
+  position: relative;
+  z-index: 100;
+  background-color: transparent;
 }
 .unity-interactions .unity-leave{
   display: flex;
@@ -860,8 +863,9 @@ position: relative;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9;
-  background-color: rgb(39, 138, 36);
+  z-index: 10;
+  cursor: grab;
+  background-color:transparent;
 }
 .unity-interactions .unity-like{
   flex: 0.33;
@@ -924,6 +928,8 @@ position: relative;
   display: flex;
   flex: 0.33;
   justify-content: center;
+  position: relative;
+  z-index:120;
 }
 
 .unity-interactions .unity-control .unity-flex-child {
