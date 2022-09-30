@@ -17,7 +17,7 @@ import { Unityloader } from "../../component/loader/Unityloader"
 import Addcontent from "../../component/unity/Addcontent"
 import axios from "axios"
 
-const unity = () => {
+const Unitypage = () => {
  const { user } = useAuth()
  const query = useRouter()
  const span = useRef();
@@ -271,7 +271,7 @@ const openModal = () => {
   )
 }
 
-export default unity
+export default Unitypage
 
 
 

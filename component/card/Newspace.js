@@ -81,6 +81,7 @@ const Newspace = () => {
   return (
     <motion.div
     className="space-modal"
+    style={{zIndex:'50'}}
     variants={dropIn}
     initial="hidden"
     animate="visible"
