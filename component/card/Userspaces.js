@@ -6,8 +6,9 @@ import { useAuth } from '../router/AuthContext'
 import { LoadingPosts } from './LoadingCard'
 
 const Userspaces = ({userData ,loading}) => {
+  const [list ,setList] = useState([])
 
-    console.log(userData.length > 0 ? 'data  avil' : 'data not avail')
+
 
   return (
     <>
@@ -31,14 +32,18 @@ const Userspaces = ({userData ,loading}) => {
                 pathname: '/spaces/unity',
                 query: { 
                   type: 'spaces',
-                  id:item.id,
+                  id:item.listid,
                   name:item.name.toUpperCase()
                  },
+                 
                }}>
               <div className='box-height-medium'>
                <Image priority src={item.img} layout='fill' alt='userImages' />
                 <div className="exlusive-boxHeading">
-                   <h3>{item.name}</h3>
+                {
+                    item.name.length > 23 ? 
+                    <h3>{item.name.substring(0,23)}...</h3> :  <h3>{item.name}</h3>
+                }
                    <p>by {item.author}</p>
                 </div>
           </div>

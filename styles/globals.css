@@ -595,8 +595,8 @@ position: relative;
    width: 110px;
    margin: 0 10px;
    outline: none;
-   border: none
-   ;
+   border: none;
+   background-color: transparent;
 }
 .spaces-search > form > button {
   display: none;
@@ -718,7 +718,7 @@ position: relative;
 .newSpacesCard-height{
   position: relative;
   width: 100%;
-  height: 20vh;
+  height: 25vh;
   border-radius: 10px;
   overflow: hidden;
   display: flex;
@@ -735,6 +735,7 @@ position: relative;
 .newspaces > h5 {
   padding: 10px 4px;
   width: fit-content;
+  color: #000;
 }
 .newSpacesCard-height::after{
   content: '';

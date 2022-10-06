@@ -28,7 +28,10 @@ const Serach = ({data}) => {
                    <div className='box-height-medium'>
                     <Image priority src={item.img} layout='fill' alt='searchImages' />
                      <div className="exlusive-boxHeading">
-                        <h3>{item.name}</h3>
+                      {
+                        item.name.length > 23 ? 
+                        <h3>{item.name.substring(0,23)}...</h3> :  <h3>{item.name}</h3>
+                       }
                         <p>by {item.author}</p>
                      </div>
                </div>

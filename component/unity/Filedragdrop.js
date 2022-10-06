@@ -17,11 +17,12 @@ const Filedragdrop = ({toggleoff,onUpload,count,formats}) => {
   const handleChange = event => {
     const fileUploaded = event.target.files[0];
     setFile(fileUploaded);
+    onUpload(fileUploaded)
   };
   useEffect(()=> {
     if(File !== ''){
-        console.log(File)
         return toggleoff()
+        
         // setFile('')
     }
     drop.current.addEventListener('dragover', handleDragOver);
@@ -57,7 +58,7 @@ const Filedragdrop = ({toggleoff,onUpload,count,formats}) => {
       }
      
     if (files && files) { 
-    onUpload(files);
+    onUpload(files[0]);
     }
   };
 

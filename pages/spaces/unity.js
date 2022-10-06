@@ -16,11 +16,13 @@ import { useRef } from "react"
 import { Unityloader } from "../../component/loader/Unityloader"
 import Addcontent from "../../component/unity/Addcontent"
 import axios from "axios"
+import { doc, getDoc } from "firebase/firestore"
+import { db } from "../../firebase"
 
 const Unitypage = () => {
  const { user } = useAuth()
  const query = useRouter()
- const span = useRef();
+
  const [buttons,setButtons] = useState({
     like:false,
     mic:false,
@@ -29,20 +31,23 @@ const Unitypage = () => {
     videoCam:false
  })
 
- const [pathId,setPathId] = useState(query.Id)
- const [pathType,setPathType] = useState(query.type)
+//  const [pathId,setPathId] = useState(query.Id)
+//  const [pathType,setPathType] = useState(query.type)
  const [pathName,setPathName] = useState('')
  const [inputName,setInputName] = useState('')
  const [ismodal,setIsmodal] = useState(false)
 
 
- const { unityProvider,sendMessage,loadingProgression, isLoaded } = useUnityContext({
-  loaderUrl: "/Build/build.loader.js",
-  dataUrl: "/Build/build.data",
-  frameworkUrl: "/Build/build.framework.js",
-  codeUrl: "/Build/build.wasm",
-});
-const loading = Math.round(loadingProgression * 100)
+
+//  const { unityProvider,sendMessage,loadingProgression, isLoaded } = useUnityContext({
+//   loaderUrl: "/Build/build.loader.js",
+//   dataUrl: "/Build/build.data",
+//   frameworkUrl: "/Build/build.framework.js",
+//   codeUrl: "/Build/build.wasm",
+// });
+// const loading = Math.round(loadingProgression * 100)
+
+const isLoaded = true;
 
 
 
@@ -87,36 +92,38 @@ const nameHandle = (e) =>{
 
 
 
-const unityModel = () => {
-  const unityData = {_id:'5s1l4XbAG5DHtc8UyO51',_type:'explore',}
-  const unityJson = JSON.stringify(unityData)
-  sendMessage("APICaller", "GameController", unityJson);
-}
+// const unityModel = () => {
+//   const unityData = {_id:'5s1l4XbAG5DHtc8UyO51',_type:'explore',}
+//   const unityJson = JSON.stringify(unityData)
+//   sendMessage("APICaller", "GameController", unityJson);
+// }
 
-unityModel()
-useEffect(()=>{
+// unityModel()
+useEffect( ()=>{
     if(!query.isReady) return;
     setPathName(query.query.name)
-    setInputName(`${user.displayName}'s ${query.query.name}`)
-    const url = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/addnewSpacesInUser`
-    const spaceObj = {
-      newSpacesID:query.query.id,
-      userID:user.uid
+    const dataExists = async () => {
+      const docRef = doc(db, "spaces", query.query.id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+         console.log("Document data:", docSnap.data());
+         setInputName(docSnap.data().name)
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
     }
-    const userFetch = () => {
-      console.log('ok')
-    }
-    // axios.post(url,spaceObj)
-    // .then((res) => {
-    //   console.log('suscess')
-    // })
-    // .catch((error)=>{
-    //   console.error(error)
-    // })
-    userFetch()
-    console.log('render')
+    dataExists()
+      // .catch(console.error);
+     
+     
     // codes using router.query
 }, [query.isReady]);
+
+
+
+
+
 
 const openModal = () => {
   setIsmodal(!ismodal)
@@ -139,13 +146,13 @@ const openModal = () => {
 
       {ismodal && 
        <div className="newSpace">
-        <Addcontent action={openModal} />
+        <Addcontent action={openModal} spaceId={query.query.id} />
       </div> }  
         {
            isLoaded && (
             <div className="unity-interaction-container">
             <div className="unity-interactions">
-                <Link href={query.query.type === 'spaces' ? '/spaces?create=true' : '/spaces'}>
+                <Link href={'/spaces'}>
                  <div className="unity-leave">
                     <div className="unity-flex-child">
                        <span className="exit-rotate-unity"><IoExitOutline /> </span> <span>LEAVE</span>
@@ -256,14 +263,14 @@ const openModal = () => {
             )
         }
         <div className="unity-scene">
-        {!isLoaded && (
+        {/* {!isLoaded && (
         <Unityloader loading={loading} envirometname={query.query.name} />
          )}
         
         < Unity
         unityProvider={unityProvider}
         style={{ visibility: isLoaded ? "visible" : "hidden",width:'100%',height:'100%',overflow:'hidden' }}
-        />
+        /> */}
         </div> 
        
     </div>
