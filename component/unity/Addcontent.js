@@ -35,8 +35,35 @@ const Addcontent = ({action,spaceId}) => {
         }
       };
       const onUpload = async (files) => {
-        console.log(files);
-        const url = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/addSpaceObject`
+        
+        var allowedExtensions =/(\.glb)$/i;
+        if(!allowedExtensions.exec(files.name)){
+           const url = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/addSpaceFiles`
+        const data = new FormData()
+        data.append('file',files)
+        data.append('spaceId',spaceId)
+        data.append('name','zaid images')
+        data.append('position',"{x:0.y:0.z:0}")
+        data.append('rotation','{x:0.y:0.z:0}')
+        data.append('scale','{x:1.y:1.z:1}')
+        console.log('add files')
+        
+        await axios.post(url,data,{
+          headers: {
+            'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(function (response) {
+            //handle success
+            console.log('success' +response);
+          })
+          .catch(function (response) {
+            //handle error
+            console.log(response);
+          });
+        }
+        else{
+           const url = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/addSpaceObject`
         const data = new FormData()
         data.append('file',files)
         data.append('spaceId',spaceId)
@@ -52,13 +79,14 @@ const Addcontent = ({action,spaceId}) => {
         })
         .then(function (response) {
             //handle success
-            console.log(response);
+            console.log('success' +response);
           })
           .catch(function (response) {
             //handle error
             console.log(response);
           });
-        console.log(data)
+        }
+       
       };
       const formats = ['txt','jpg','png','glb']
 

@@ -16,8 +16,9 @@ import { useRef } from "react"
 import { Unityloader } from "../../component/loader/Unityloader"
 import Addcontent from "../../component/unity/Addcontent"
 import axios from "axios"
-import { doc, getDoc } from "firebase/firestore"
+import { doc, getDoc, setDoc } from "firebase/firestore"
 import { db } from "../../firebase"
+import toast, { Toaster } from 'react-hot-toast';
 
 const Unitypage = () => {
  const { user } = useAuth()
@@ -88,6 +89,24 @@ const playHandle = () => {
 const nameHandle = (e) =>{
   setInputName(e.target.value)
 }
+const submitInput = (e) => {
+  e.preventDefault()
+  console.log(inputName)
+  const docRef = doc(db, "spaces", query.query.id);
+  const data = {
+    name: inputName,
+  };
+  
+  setDoc(docRef, data,{ merge:true })
+  .then(docRef => {
+    console.log(docRef)
+    toast.success('Name Update Succesfuuly')
+  })
+  .catch(error => {
+    toast.error('Unexpected Error');
+  })
+
+}
 
 
 
@@ -143,7 +162,7 @@ const openModal = () => {
 
   return (
     <div className="unity-scene-spaces">
-
+    <Toaster />
       {ismodal && 
        <div className="newSpace">
         <Addcontent action={openModal} spaceId={query.query.id} />
@@ -169,7 +188,7 @@ const openModal = () => {
                        query.query.type === 'spaces' ?
              
                      
-                       <form>
+                       <form onSubmit={submitInput}>
                          <input
                       style={{ width: `${inputName.length}ch`,textAlign:'center'}}
                       onChange={nameHandle}
@@ -192,9 +211,9 @@ const openModal = () => {
                   <div className="bg-info rounded-circle image-space unity-avatar-border">
                     {
                       user.photoUrl ?
-                      <Image className="space-avtar-img" src={user.photoUrl} layout='fill' alt="avatarImages"/>
+                      <Image className="space-avtar-img" src={user.photoUrl}  priority={true} layout='fill' alt="avatarImages"/>
                       :
-                      <Image src='/images/login-images/thumbnail.png' layout='fill'  alt="thumbnailImages" />
+                      <Image src='/images/login-images/thumbnail.png'  priority={true} layout='fill'  alt="thumbnailImages" />
                     }
                   </div>
                   </div>  

@@ -40,7 +40,7 @@ const NewScard = ({data,name}) => {
                 <div onClick={() => createScene(item.id,item.name)}  key={item.id} className="col-md-6 col-lg-4 newspaces">
              
                 <div className="newSpacesCard-height">
-                    <Image src={item.img} layout='fill' priority alt='newspaces' />
+                    <Image src={item.img} layout='fill' priority={true} alt='newspaces' />
                     {
                         item.name === 'Upload Custom Space' && <span><BiUpload /></span>
                     }
