@@ -3,7 +3,7 @@ import React from 'react'
 const Sidabarunity = () => {
   return (
     <div>
-      zaid
+      zaid nagori
     </div>
   )
 }
