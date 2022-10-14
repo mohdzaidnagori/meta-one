@@ -19,6 +19,7 @@ import axios from "axios"
 import { doc, getDoc, setDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 import toast, { Toaster } from 'react-hot-toast';
+import Sidabarunity from "../../component/unity/Sidabarunity";
 
 const Unitypage = () => {
  const { user } = useAuth()
@@ -29,7 +30,8 @@ const Unitypage = () => {
     mic:false,
     count:120,
     play:false,
-    videoCam:false
+    videoCam:false,
+    open:false
  })
 
 //  const [pathId,setPathId] = useState(query.Id)
@@ -147,7 +149,14 @@ useEffect( ()=>{
 const openModal = () => {
   setIsmodal(!ismodal)
 }
-
+const closedModalsidebar = () => {
+  setButtons(prev =>(
+    {
+     ...prev,
+     open:false
+    }
+     ))
+}
 
 
 
@@ -163,6 +172,9 @@ const openModal = () => {
   return (
     <div className="unity-scene-spaces">
     <Toaster />
+        <div className='SidebarBox-unity'>
+        <Sidabarunity open={buttons.open} closedModal={closedModalsidebar} />
+        </div>
       {ismodal && 
        <div className="newSpace">
         <Addcontent action={openModal} spaceId={query.query.id} />
@@ -262,7 +274,15 @@ const openModal = () => {
               <span><AiOutlineRight /></span>
            </div>
            : <div className="unity-bottom-center-flex">
-            <div className="unity-bottom-center unity-hover" data-name="Sticky note"><MdOutlineSpeakerNotes /></div>
+            <div
+            onClick={() => setButtons(prev =>(
+              {
+               ...prev,
+               open:!buttons.open
+              }
+               ))
+             }
+             className="unity-bottom-center unity-hover" data-name="Sticky note"><MdOutlineSpeakerNotes /></div>
              <div className="unity-bottom-center unity-hover" data-name="Search or URL"><AiOutlineSearch /></div>
              <div onClick={openModal} className="unity-bottom-center unity-hover" data-name="Add content" style={{backgroundColor:'#28f'}}><MdAdd /></div>
              <div className="unity-bottom-center unity-hover" data-name="Add portal"><GiPortal /></div>
