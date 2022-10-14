@@ -1264,6 +1264,8 @@ position: relative;
   font-size: 16px;
   margin-left: 10px;
   text-align: right;
+  color: black;
+  background-color: transparent;
   padding: 4px;
   border: 1px solid rgba(0,0,0,.3);
   border-radius: 3px;
