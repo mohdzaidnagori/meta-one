@@ -9,7 +9,7 @@ const Sidabarunity = ({open,closedModal,data,sendMessage}) => {
     positionY:0,
     positionZ:0,
     rotate:0,
-    scale:0
+    scale:1
   })
   
   const sidebarVariants = {
