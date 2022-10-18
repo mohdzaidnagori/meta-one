@@ -48,7 +48,6 @@ const Sidabarunity = ({open,closedModal,data,sendMessage}) => {
   const rangehandle = (e,index) => {
     if(index === 'positionX'){
       setCount(prev => ({...prev,positionX:e.target.value}))
-      sendMessage("ModelTransform","ChangeXAxis",e.target.value)
     }
     if(index === 'positionY'){
       setCount(prev => ({...prev,positionY:e.target.value}))
@@ -64,6 +63,13 @@ const Sidabarunity = ({open,closedModal,data,sendMessage}) => {
       setCount(prev => ({...prev,rotate:e.target.value}))
     }
   }
+  useEffect(() => {
+    sendMessage("ModelTransform","ChangeXAxis",~~count.positionX)
+    sendMessage("ModelTransform","ChangeYAxis",parseInt(count.positionY))
+    sendMessage("ModelTransform","ChangeZAxis",~~count.positionZ)
+    sendMessage("ModelTransform","ChangeRotation",~~count.rotate)
+    sendMessage("ModelTransform","ChangeScale",~~count.scale)
+  },[count])
   // console.log(count)
 
 
@@ -99,7 +105,7 @@ const Sidabarunity = ({open,closedModal,data,sendMessage}) => {
           <span onClick={() => resethandle('rotation')}>Reset</span>
         </div>
         <div className="sidebar-range">
-          <Range min={-100} max={100} handleChange={e => rangehandle(e,'rotate')} value={count.rotate} />
+          <Range min={-180} max={180} handleChange={e => rangehandle(e,'rotate')} value={count.rotate} />
         </div>
     </div>
     <div className="sidebar-container">
@@ -108,7 +114,7 @@ const Sidabarunity = ({open,closedModal,data,sendMessage}) => {
           <span onClick={() => resethandle('scale')}>Reset</span>
         </div>
         <div className="sidebar-range">
-          <Range min={-100} max={100} handleChange={e => rangehandle(e,'scale')} value={data.scale || 0} />
+          <Range min={0} max={100} handleChange={e => rangehandle(e,'scale')} value={data.scale || 0} />
         </div>
     </div>
     <div className="sidebar-container">
