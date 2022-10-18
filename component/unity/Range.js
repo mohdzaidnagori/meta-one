@@ -1,14 +1,14 @@
 import React from 'react'
 
 
-const Range = ({handleChange,value}) => {
+const Range = ({handleChange,value,min,max,step}) => {
   return (
     <div className='range-box'>
       <input
        type="range"
-       min='0'
-       max='35'
-       step='0.1'
+       min={min}
+       max={max}
+       step={1}
       value={value}
       onChange={handleChange}
         />
