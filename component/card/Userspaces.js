@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { useAuth } from '../router/AuthContext'
 import { LoadingPosts } from './LoadingCard'
 
-const Userspaces = ({userData ,loading}) => {
+const Userspaces = ({userData ,loading,displayName}) => {
   const [list ,setList] = useState([])
 
 
@@ -33,7 +33,9 @@ const Userspaces = ({userData ,loading}) => {
                 query: { 
                   type: 'spaces',
                   id:item.listid,
-                  name:item.name.toUpperCase()
+                  name:item.name.toUpperCase(),
+                  displayName:displayName
+                  
                  },
                  
                }}>

@@ -269,7 +269,7 @@ const Space = () => {
               ?
               <div className="spaces-explore">
                  <div className="spaces-explore-small">
-                    <Userspaces loading ={userSpace.loading} userData={userSpace.userspaces}/>
+                    <Userspaces displayName={user.displayName} loading ={userSpace.loading} userData={userSpace.userspaces}/>
                  </div>
               </div>
               :

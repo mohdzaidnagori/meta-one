@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { motion } from "framer-motion";
 import { AiFillHeart, AiOutlineHeart, AiOutlineLeft, AiOutlineRight, AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai"
 import { RiCameraFill } from "react-icons/ri"
 import {BsMicMute,BsMic, BsCameraVideo, BsCameraVideoOff} from 'react-icons/bs'
@@ -19,6 +20,9 @@ import { db } from "../../firebase"
 import toast, { Toaster } from 'react-hot-toast';
 import Sidabarunity from "../../component/unity/Sidabarunity";
 import { useCallback } from "react"
+import VideoSidebar from "../../component/unity/VideoSidebar"
+import dynamic from "next/dynamic"
+
 
 const Unitypage = () => {
  const { user } = useAuth()
@@ -29,8 +33,8 @@ const Unitypage = () => {
     mic:false,
     count:120,
     play:false,
-    videoCam:false,
-    open:false
+    videoCam:true,
+    open:false,
  })
 
 //  const [pathId,setPathId] = useState(query.Id)
@@ -38,6 +42,8 @@ const Unitypage = () => {
  const [pathName,setPathName] = useState('')
  const [inputName,setInputName] = useState('')
  const [ismodal,setIsmodal] = useState(false)
+ const [videoCam ,setVideocam] = useState(true)
+ const [pathId,setPathId] = useState('')
  const [data,setData] = useState({
   positionX:'0',
   positionY:'0',
@@ -64,7 +70,7 @@ const loading = Math.round(loadingProgression * 100)
 
  const likeHandle = () => {
     if(!buttons.like){
-        setButtons(prev =>(
+         setButtons(prev =>(
             {
              ...prev,
              count:buttons.count+1,
@@ -88,7 +94,8 @@ const micHandle = (type) => {
       setButtons(prev => ({...prev, mic:!buttons.mic}))
     }
     if(type==='video'){
-      setButtons(prev => ({...prev, videoCam:!buttons.videoCam}))
+      // setButtons(prev => ({...prev, videoCam:!buttons.videoCam}))
+      setVideocam(!videoCam)
     }
 }
 const playHandle = () => {
@@ -99,7 +106,7 @@ const nameHandle = (e) =>{
 }
 const submitInput = (e) => {
   e.preventDefault()
-  console.log(inputName)
+  // console.log(inputName)
   const docRef = doc(db, "spaces", query.query.id);
   const data = {
     name: inputName,
@@ -107,7 +114,7 @@ const submitInput = (e) => {
   
   setDoc(docRef, data,{ merge:true })
   .then(docRef => {
-    console.log(docRef)
+    // console.log(docRef)
     toast.success('Name Update Succesfuuly')
   })
   .catch(error => {
@@ -126,10 +133,12 @@ const unityModel = () => {
 
 }
 
+
 unityModel()
 useEffect( ()=>{
     if(!query.isReady) return;
     setPathName(query.query.name)
+    setPathId(query.query.id)
     const dataExists = async () => {
       const docRef = doc(db, "spaces", query.query.id);
       const docSnap = await getDoc(docRef);
@@ -138,7 +147,7 @@ useEffect( ()=>{
          setInputName(docSnap.data().name)
       } else {
         // doc.data() will be undefined in this case
-        console.log("No such document!");
+        // console.log("No such document!");
       }
     }
     dataExists()
@@ -175,17 +184,38 @@ useEffect(() => {
 const openModal = () => {
   setIsmodal(!ismodal)
 }
-const closedModalsidebar = () => {
-  setButtons(prev =>(
-    {
-     ...prev,
-     open:false
-    }
-     ))
+const closedModalsidebar = (check) => {
+  if(check === 'openPosition'){
+    setButtons(prev =>(
+      {
+       ...prev,
+       open:false
+      }
+       ))
+  }
+  if(check === 'openVideo'){
+    // setButtons(prev =>(
+    //   {
+    //    ...prev,
+    //    videoCam:false
+    //   }
+    //    ))
+    setVideocam(false)
+  }
+  
 }
 const searchhandle = () => {
   
 }
+const sidebarVariants = {
+  sidebarOpen: {
+    width: "350px",
+  },
+
+  sidebarClosed: {
+    width: "",
+  },
+};
 
 
 
@@ -194,14 +224,30 @@ const searchhandle = () => {
 
    
  
-
+const App = dynamic(import('../../component/agora/VideoCall'), { ssr: false });
  
 
   return (
     <div className="unity-scene-spaces">
     <Toaster />
         <div className='SidebarBox-unity'>
-        <Sidabarunity sendMessage={sendMessage}  data={data}   open={buttons.open} closedModal={closedModalsidebar} />
+        <Sidabarunity sendMessage={sendMessage}  data={data}   open={buttons.open} closedModal={() => closedModalsidebar('openPosition')} />
+        </div>
+        <div className='SidebarBox-unity-top-left'>
+      <motion.div 
+          variants={sidebarVariants}
+          animate={videoCam ? "sidebarOpen" : "sidebarClosed"}
+          className='sidbarBoxunity sidbarBoxunity-border'>
+            <div className="sidebar-container">
+              <App channelName={pathId}  buttons={videoCam} setInCall={false} username={pathName} />
+            </div>
+         <div className="sidebar-container">
+           <div className="sidebar-button-submit">
+             <button onClick={() => closedModalsidebar('openVideo')} className="sidebar-button">done</button>
+           </div>
+         </div>
+      </motion.div>
+        {/* <VideoSidebar  username={pathName} pathId={pathId} open={buttons.videoCam} closedModal={() => closedModalsidebar('openVideo')} /> */}
         </div>
       {ismodal && 
        <div className="newSpace">
@@ -282,7 +328,7 @@ const searchhandle = () => {
               { buttons.mic ?  <BsMic /> :<BsMicMute/> }
               </div>
               <div onClick={() => micHandle('video')} data-name={buttons.videoCam ? 'Turn of camera' : 'Turn on camera'} className="unity-flex-child unity-hover">
-              { buttons.videoCam ?  <BsCameraVideo /> :<BsCameraVideoOff/> }
+              { videoCam ?  <BsCameraVideo /> :<BsCameraVideoOff/> }
               </div>
             </div>
             <div className="unity-control">

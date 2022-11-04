@@ -4,6 +4,7 @@ import Range from './Range';
 import { useEffect } from 'react';
 
 const Sidabarunity = ({open,closedModal,data,sendMessage}) => {
+// console.log(open)
   const [count ,setCount] = useState({
     positionX:0,
     positionY:0,
