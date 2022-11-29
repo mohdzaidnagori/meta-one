@@ -9,7 +9,10 @@ import {
   ICameraVideoTrack,
   IMicrophoneAudioTrack,
 } from "agora-rtc-react";
-import { useRouter } from 'next/router'
+import {BsMicMute,BsMic, BsCameraVideo, BsCameraVideoOff} from 'react-icons/bs'
+import { IoExitOutline } from 'react-icons/io5'
+import { useRouter } from "next/router";
+
 
 
 
@@ -22,19 +25,7 @@ const config: ClientConfig = {
 const appId: string = "1c25b0229b224c48a05674551e80719b"; //ENTER APP ID HERE
 const token: string | null = null;
 
-const App = ({buttons}) => {
-  const [inCall, setInCall] = useState(true);
-  const [channelName, setChannelName] = useState("");
-  const query = useRouter()
 
-  return (
-    <div>
-      {inCall ? 
-        <VideoCall setInCall={setInCall} buttons={buttons} displayName={query.query.displayName}  channelName={query.query.name} />
-        : 'zaid'}
-    </div>
-  );
-};
 
 // the create methods in the wrapper return a hook
 // the create method should be called outside the parent component
@@ -44,19 +35,17 @@ const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks()
 
 
 const VideoCall = (props: {
-  setInCall: React.Dispatch<React.SetStateAction<boolean>>;
+  setInCall:    React.Dispatch<React.SetStateAction<boolean>>;
   channelName:  React.Dispatch<React.SetStateAction<string>>;
-  buttons: React.Dispatch<React.SetStateAction<boolean>>;
   displayName:  React.Dispatch<React.SetStateAction<BigInteger>>;
 }) => {
-  const { setInCall, channelName ,buttons,displayName} = props;
+  const { setInCall, channelName} = props;
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
   // using the hook to get access to the client object
   const client = useClient();
-console.log(displayName)
-console.log(displayName)
-console.log(displayName)
+
+
 
 
 
@@ -64,7 +53,11 @@ console.log(displayName)
   // ready is a state variable, which returns true when the local tracks are initialized, untill then tracks variable is null
   const { ready, tracks } = useMicrophoneAndCameraTracks();
 
-  
+  // useEffect(() => {
+
+  //   leaveChannel()
+  //     .catch(console.error);
+  // }, [leave])
 
 
   useEffect(() => {
@@ -105,11 +98,11 @@ console.log(displayName)
     
     
         try {
-          await client.join(appId, name, token, displayName);
+          await client.join(appId, name, token, null);
           if (tracks) await client.publish([tracks[0], tracks[1]]);
           setStart(true);
+        
         } catch (error) {
-          // alert('connected')
           setStart(true);
         }
     };
@@ -119,18 +112,16 @@ console.log(displayName)
       init(channelName);
     }
 
-  }, [client,channelName,ready,tracks]);
+  },[channelName, client, ready, tracks]);
 
-  console.log(ready)
-  console.log(tracks)
-  console.log(start)
+
   return (
     <div className="App-1">
-
+      {start && tracks ? <Videos users={users} tracks={tracks} /> : <div style={{width:'300px'}}>Video tracks loading</div>}
       {ready && tracks && (
-        <Controls tracks={tracks} setStart={setStart} setInCall={setInCall} />
+        <Controls tracks={tracks} setStart={setStart} setInCall={setInCall}   />
       )}
-      {start && tracks && <Videos users={users} tracks={tracks} />}
+      
     </div>
   );
 };
@@ -153,7 +144,7 @@ const Videos = (props: {
               return (
                 <>
                 <AgoraVideoPlayer style={{height: '95%', width: '95%'}} className='vid-1' videoTrack={user.videoTrack} key={user.uid} />
-                <h1>{user.uid}</h1>
+                {/* <h1>{user.uid}</h1> */}
                 </>
               );
             } else return null;
@@ -171,9 +162,11 @@ export const Controls = (props: {
   const client = useClient();
   const { tracks, setStart, setInCall } = props;
   const [trackState, setTrackState] = useState({ video: true, audio: true });
+  const router = useRouter()
 
+ 
 
-  const mute = async (type: "audio" | "video") => {
+  const mute = async (type: "audio" | "video"|"test") => {
     if (type === "audio") {
       await tracks[0].setEnabled(!trackState.audio);
       setTrackState((ps) => {
@@ -185,58 +178,43 @@ export const Controls = (props: {
         return { ...ps, video: !ps.video };
       });
     }
+   
   };
-
-  const leaveChannel = async () => {
-    await client.leave();
-    client.removeAllListeners();
-    // we close the tracks to perform cleanup
-    tracks[0].close();
-    tracks[1].close();
-    setStart(false);
   
-    // setTimeout(() => {
-    //   Router.reload()
-    // }, 1000);
-    // router.push('/Login')
+  const leaveChannel = async () => {
+
+      await client.leave();
+      client.removeAllListeners();
+      tracks[0].close();
+      tracks[1].close();
+      setStart(false);  
   };
+ 
+
+
+
+  
+  
+ 
+
+ 
 
   return (
     <div className="controls-1">
-      <p className={trackState.audio ? "on" : ""}
-        onClick={() => mute("audio")}>
-        {trackState.audio ? "MuteAudio" : "UnmuteAudio"}
-      </p>
-      <p className={trackState.video ? "on" : ""}
-        onClick={() => mute("video")}>
-        {trackState.video ? "MuteVideo" : "UnmuteVideo"}
-      </p>
-      {<p onClick={() => leaveChannel()}>Leave</p>}
+       
+              <div className="unity-flex-child unity-hover"  onClick={() => mute("audio")}  data-name={trackState.audio ? 'Turn of mic' : 'Turn on mic'}>
+              { trackState.audio ?  <BsMic /> :<BsMicMute/> }
+              </div>
+              <div className="unity-flex-child unity-hover"  onClick={() => mute("video")} data-name={trackState.video  ? 'Turn of camera' : 'Turn on camera'} >
+              { trackState.video ?  <BsCameraVideo /> :<BsCameraVideoOff/> }
+              </div>
+
+               <div className="unity-flex-child" onClick={() => leaveChannel()}>
+                    <a href="/spaces"><span className="exit-rotate-unity"><IoExitOutline /> </span> <span>LEAVE</span></a>
+                </div>
     </div>
   );
 };
 
-const ChannelForm = (props: {
-  setInCall: React.Dispatch<React.SetStateAction<boolean>>;
-  setChannelName: React.Dispatch<React.SetStateAction<string>>;
-}) => {
-  const { setInCall, setChannelName } = props;
 
-  return (
-    <form className="join">
-      {appId === '' && <p style={{color: 'red'}}>Please enter your Agora App ID in App.tsx and refresh the page</p>}
-      <input type="text"
-        placeholder="Enter Channel Name"
-        onChange={(e) => setChannelName(e.target.value)}
-      />
-      <button onClick={(e) => {
-        e.preventDefault();
-        setInCall(true);
-      }}>
-        Join
-      </button>
-    </form>
-  );
-};
-
-export default App;
+export default VideoCall;

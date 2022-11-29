@@ -3,8 +3,11 @@ import { motion } from "framer-motion";
 import { AiOutlineClose } from 'react-icons/ai';
 import Filedragdrop from './Filedragdrop';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+import { useDispatch } from "react-redux";
+import { AddNote,DeleteNote } from "../redux/CounterSlice";
 
-const Addcontent = ({action,spaceId}) => {
+const Addcontent = ({action,spaceId,Urldata}) => {
     const [ToggleState, setToggleState] = useState(1);
 
     const toggleTab = (index) => {
@@ -34,11 +37,20 @@ const Addcontent = ({action,spaceId}) => {
           },
         }
       };
+      // const getUrl = (res) => {
+      //   Urldata(res)
+      // }
+      const dispatch = useDispatch();
       const onUpload = async (files) => {
-        
+        const modalLoader = {
+          id:'loading',
+          url:'loading'
+        }
+        dispatch(AddNote(modalLoader));
+        toast.success('uploading...')
         var allowedExtensions =/(\.glb)$/i;
         if(!allowedExtensions.exec(files.name)){
-           const url = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/addSpaceFiles`
+        const url = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/addSpaceFiles`
         const data = new FormData()
         data.append('file',files)
         data.append('spaceId',spaceId)
@@ -55,15 +67,37 @@ const Addcontent = ({action,spaceId}) => {
         })
         .then(function (response) {
             //handle success
-            console.log('success' +response);
+            toast.success('successfully upload')
+            console.log(response.data.url)
+            let match = response.data.url.match(/.jpg|.jpeg|.png|.webp|.avif|.gif|.svg/)
+            let videomatch = response.data.url.match(/.mp4|.mkv|.ogg|.mov|.avi|.webm|.flv/)
+            if(match[0] === '.jpg' || match[0] === '.jpeg' || match[0] === '.png' || 
+            match[0] === '.webp' || match[0] === '.avif' || match[0] === '.gif' || match[0] === '.svg'){
+               dispatch(DeleteNote())
+              const modalImg = {
+                id:response.data.id,
+                url:response.data.url,
+                type:'img'
+              }
+              dispatch(AddNote(modalImg));
+            }
+            if(videomatch[0] === '.mp4' || videomatch[0] === '.mkv' || videomatch[0] === '.ogg' || 
+            videomatch[0] === '.mov' || videomatch[0] === '.avi' || videomatch[0] === '.webm' || videomatch[0] === '.flv'){
+              const modalVideo = {
+                id:response.data.id,
+                url:response.data.url,
+                type:'video'
+              }
+              dispatch(AddNote(modalVideo));
+            }
           })
           .catch(function (response) {
             //handle error
-            console.log(response);
+            toast.error('enexpected error' +response)
           });
         }
-        else{
-           const url = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/addSpaceObject`
+        else{  
+        const url = `https://asia-south1-metaone-ec336.cloudfunctions.net/api/addSpaceObject`
         const data = new FormData()
         data.append('file',files)
         data.append('spaceId',spaceId)
@@ -79,20 +113,32 @@ const Addcontent = ({action,spaceId}) => {
         })
         .then(function (response) {
             //handle success
-            console.log('success' +response);
+           toast.success('successfully upload')
+           console.log(response)
+       
+          const modalGlb = {
+            id:response.data.id,
+            url:response.data.url,
+            type:'glb'
+          }
+          dispatch(AddNote(modalGlb));
+           
           })
-          .catch(function (response) {
-            //handle error
-            console.log(response);
-          });
+          // .catch(function (response) {
+          //   //handle error
+          //   toast.error('enexpected error' +response)
+          // });
         }
        
       };
+    
       const formats = ['txt','jpg','png','glb']
 
 
 
   return (
+    <>
+    <Toaster />
     <motion.div
     className="space-modal add-content-modal"
     variants={dropIn}
@@ -122,6 +168,7 @@ const Addcontent = ({action,spaceId}) => {
     </div>
     <div onClick={action} className="space-modal-close 1"><AiOutlineClose /></div>
     </motion.div>
+    </>
   )
 }
 

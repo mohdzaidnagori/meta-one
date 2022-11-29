@@ -39,6 +39,7 @@ const Userspaces = ({userData ,loading,displayName}) => {
                  },
                  
                }}>
+               {/* <Link href={`spaces/0GVMd2Z0ctyFKNfqS9RQ?type=space`}> */}
               <div className='box-height-medium'>
                <Image priority src={item.img} layout='fill' alt='userImages' />
                 <div className="exlusive-boxHeading">
