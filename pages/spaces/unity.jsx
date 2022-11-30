@@ -443,14 +443,38 @@ const ImageUploader = () => {
   const unityData = {id:notes[notes.length -1]?.id,url:notes[notes.length -1]?.url}
   const unityJson = JSON.stringify(unityData)
   sendMessage("ImageLoader", "ImgLoader", unityJson);
+  console.log('image uploader')
 }
-ImageUploader()
-const reduxfn = (res) => {
-  console.log(res.length)
+const VideoUploader = () => {
+  const unityData = {id:notes[notes.length -1]?.id,url:notes[notes.length -1]?.url}
+  const unityJson = JSON.stringify(unityData)
+  sendMessage("VideoLoad", "VideoLoader", unityJson);
+  console.log('video uploader')
 }
-useEffect(() => {
-reduxfn(notes)
-},[notes])
+const GlbUploader = () =>{
+  const unityData = {id:notes[notes.length -1]?.id,url:notes[notes.length -1]?.url}
+  const unityJson = JSON.stringify(unityData)
+  sendMessage("UploadedModelLoader", "UplodedModel", unityJson);
+  console.log('glb uploader')
+}
+if(notes[notes.length -1]?.type === 'img'){
+  ImageUploader()
+}
+else if(notes[notes.length -1]?.type === 'video'){
+  VideoUploader()
+}
+else if(notes[notes.length -1]?.type === 'glb'){
+  GlbUploader()
+}
+
+
+
+// const reduxfn = (res) => {
+//   console.log(res.length)
+// }
+// useEffect(() => {
+// reduxfn(notes)
+// },[notes])
 
 return (
   <>

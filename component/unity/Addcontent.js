@@ -44,7 +44,8 @@ const Addcontent = ({action,spaceId,Urldata}) => {
       const onUpload = async (files) => {
         const modalLoader = {
           id:'loading',
-          url:'loading'
+          url:'loading',
+          type:'loading'
         }
         dispatch(AddNote(modalLoader));
         toast.success('uploading...')
@@ -69,8 +70,10 @@ const Addcontent = ({action,spaceId,Urldata}) => {
             //handle success
             toast.success('successfully upload')
             console.log(response.data.url)
-            let match = response.data.url.match(/.jpg|.jpeg|.png|.webp|.avif|.gif|.svg/)
-            let videomatch = response.data.url.match(/.mp4|.mkv|.ogg|.mov|.avi|.webm|.flv/)
+            let match = 'any' 
+            match = response.data.url.match(/.jpg|.jpeg|.png|.webp|.avif|.gif|.mp4|.svg/)
+            console.log(match[0])
+            // let videomatch = response.data.url.match(/.mp4|.mkv|.ogg|.mov|.avi|.webm|.flv/)
             if(match[0] === '.jpg' || match[0] === '.jpeg' || match[0] === '.png' || 
             match[0] === '.webp' || match[0] === '.avif' || match[0] === '.gif' || match[0] === '.svg'){
                dispatch(DeleteNote())
@@ -81,13 +84,14 @@ const Addcontent = ({action,spaceId,Urldata}) => {
               }
               dispatch(AddNote(modalImg));
             }
-            if(videomatch[0] === '.mp4' || videomatch[0] === '.mkv' || videomatch[0] === '.ogg' || 
-            videomatch[0] === '.mov' || videomatch[0] === '.avi' || videomatch[0] === '.webm' || videomatch[0] === '.flv'){
+            else if(match[0] === '.mp4'){
+              dispatch(DeleteNote())
               const modalVideo = {
                 id:response.data.id,
                 url:response.data.url,
                 type:'video'
               }
+              console.log('video')
               dispatch(AddNote(modalVideo));
             }
           })
