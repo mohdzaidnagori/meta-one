@@ -33,9 +33,7 @@ const Userspaces = ({userData ,loading,displayName}) => {
                 query: { 
                   type: 'spaces',
                   id:item.listid,
-                  name:item.name.toUpperCase(),
-                  displayName:displayName
-                  
+                  name:item.name.toUpperCase(),                 
                  },
                  
                }}>

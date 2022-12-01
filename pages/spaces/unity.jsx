@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import { motion } from "framer-motion";
 import { AiFillHeart, AiOutlineDeploymentUnit, AiOutlineHeart, AiOutlineLeft, AiOutlineRight, AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai"
 import { RiCameraFill } from "react-icons/ri"
@@ -35,7 +35,7 @@ export const Unitywrapper = () => {
 }
 
 
-export const Unitypage = ({children,enviroment,UploadData}) => {
+export const Unitypage = ({children,enviroment}) => {
  const { user } = useAuth()
  const query = useRouter()
 
@@ -66,7 +66,7 @@ export const Unitypage = ({children,enviroment,UploadData}) => {
  const [joinStream, setjoinStream] = useState(true)
  const [urlData,setUrlData] = useState({})
  const [videoCam ,setVideocam] = useState(false)
-
+ const [copied, setCopied] = useState(false);
 
 
 
@@ -221,15 +221,16 @@ const sidebarVariants = {
     width: "",
   },
 };
-const getUploadData = (res) => {
-  UploadData(res)
-}
-useEffect(() => {
-  // console.log(urlData)
-  getUploadData(urlData)
-  // console.log(urlData.data?.url)
-},[urlData])
 
+function copy() {
+  const el = document.createElement("input");
+  el.value = window.location.href;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+  setCopied(true);
+}
 
 
 
@@ -334,7 +335,7 @@ useEffect(() => {
                       <div className="camera">
                         <RiCameraFill />
                       </div>
-                      <div className="camera">
+                      <div onClick={copy} className="camera unity-hover" data-name={!copied ? "Copy link" : "Copied!"} >
                         <AiOutlineUserAdd />
                       </div>
                   </div> 
@@ -403,8 +404,9 @@ useEffect(() => {
   
   )
 }
-export const UnityEnviroment = ({data}) => {
+export const UnityEnviroment = () => {
   const notes = useSelector((state) => state.notes.notes);
+  const { user } = useAuth()
   const query = useRouter()
  const { unityProvider,sendMessage,loadingProgression, isLoaded,addEventListener, removeEventListener } = useUnityContext({
   loaderUrl: "/Build/meta-one-V1.loader.js",
@@ -413,13 +415,17 @@ export const UnityEnviroment = ({data}) => {
   codeUrl: "/Build/meta-one-V1.wasm",
 });
 const loading = Math.round(loadingProgression * 100)
-const  EnvironmentLoader = () => {
+
+
+const EnvironmentLoader = () => {
   const unityData = {id:'DmoakA7G6EMESqE52vUK',type:'spaces',}
   const unityJson = JSON.stringify(unityData)
   sendMessage("EnvironmentLoader", "MainModel", unityJson);
-
 }
-EnvironmentLoader()
+
+
+
+
 
 const  ModelLoader = () => {
   const unityData = {id:'5s1l4XbAG5DHtc8UyO51',type:'spaces',}
@@ -427,17 +433,17 @@ const  ModelLoader = () => {
   sendMessage("ModelLoader", "OtherModel", unityJson);
 
 }
-ModelLoader()
+
 
 const  CreateAndJoinRooms = () => {
-  const unityData = {roomId:query.query.id,playerName:query.query.displayName,}
+  const unityData = {roomId:query.query.id,playerName:user.displayName,}
   const unityJson = JSON.stringify(unityData)
   sendMessage("CreateAndJoinRooms", "GetRoomData", unityJson);
 
 }
-CreateAndJoinRooms()
 
-// GameObject And Class Name : ImageLoader / Function Name : ImgLoader
+
+// // GameObject And Class Name : ImageLoader / Function Name : ImgLoader
 
 const ImageUploader = () => {
   const unityData = {id:notes[notes.length -1]?.id,url:notes[notes.length -1]?.url}
@@ -457,63 +463,61 @@ const GlbUploader = () =>{
   sendMessage("UploadedModelLoader", "UplodedModel", unityJson);
   console.log('glb uploader')
 }
-if(notes[notes.length -1]?.type === 'img'){
-  ImageUploader()
-}
-else if(notes[notes.length -1]?.type === 'video'){
-  VideoUploader()
-}
-else if(notes[notes.length -1]?.type === 'glb'){
-  GlbUploader()
+
+
+
+
+//   console.log('unity running')
+  if(notes[notes.length -1]?.type === 'img'){
+    ImageUploader()
+  }
+  else if(notes[notes.length -1]?.type === 'video'){
+    VideoUploader()
+  }
+  else if(notes[notes.length -1]?.type === 'glb'){
+    GlbUploader()
+  }                                                                                                                                                                       
+useEffect(()=>{
+  console.log('isloaded' + isLoaded)
+},[isLoaded])
+if(isLoaded && notes.length === 0){
+  EnvironmentLoader()
+  ModelLoader()
+  CreateAndJoinRooms()
 }
 
 
 
-// const reduxfn = (res) => {
-//   console.log(res.length)
-// }
-// useEffect(() => {
-// reduxfn(notes)
-// },[notes])
+
+
+
+
 
 return (
-  <>
+  <Fragment>
   {!isLoaded && (
-        <Unityloader loading={loading} envirometname={query.query.name} />
+        <Unityloader loading={loading} envirometname={query.query.name}  />
          )}
         
         < Unity
         unityProvider={unityProvider}
         style={{ visibility: isLoaded ? "visible" : "hidden",width:'100%',height:'100%',overflow:'hidden' }}
         />
-        {/* <h1>{notes[notes.length -1]?.id}</h1>
-         <h1>{notes[1]?.url}</h1>
-        <h1>{notes[0]?.id}</h1> */} 
-  </>
+  </Fragment>
 )
 }
 
 const Wrapper = () => {
   const App = dynamic(import('../../component/agora/VideoCall'), { ssr:false });
   const query = useRouter()
-  const [data,setdata] = useState({})
 
 const AppMemo = memo(App);
-
-const fnUploadData = (UploadData) => {
-   setdata(UploadData)
-}
-
-
-// console.log(data)
-
-
-
+const UnityEnviromentMemo = memo(UnityEnviroment)
 
   return (
     <>
    
-    <Unitypage enviroment={<UnityEnviroment data={fnUploadData} />} UploadData={(UploadData) =>  fnUploadData(UploadData)} children={<AppMemo channelName={query.query.name} />} />
+    <Unitypage enviroment={<UnityEnviromentMemo />} children={<AppMemo channelName={query.query.id} />} />
     </>
   )
 }
