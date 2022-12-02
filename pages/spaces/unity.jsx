@@ -517,7 +517,9 @@ const UnityEnviromentMemo = memo(UnityEnviroment)
   return (
     <>
    
-    <Unitypage enviroment={<UnityEnviromentMemo />} children={<AppMemo channelName={query.query.id} />} />
+    <Unitypage enviroment={<UnityEnviromentMemo />} >
+    <AppMemo channelName='main' />
+    </Unitypage>
     </>
   )
 }

@@ -36,10 +36,10 @@ const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks()
 
 const VideoCall = (props: {
   setInCall:    React.Dispatch<React.SetStateAction<boolean>>;
-  channelName:  React.Dispatch<React.SetStateAction<string>>;
+  // channelName:  React.Dispatch<React.SetStateAction<String>>;
   displayName:  React.Dispatch<React.SetStateAction<BigInteger>>;
 }) => {
-  const { setInCall, channelName} = props;
+  const { setInCall} = props;
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
   // using the hook to get access to the client object
@@ -109,10 +109,10 @@ const VideoCall = (props: {
 
     if (ready && tracks) {
       console.log("init ready");
-      init(channelName);
+      init('main');
     }
 
-  },[channelName, client, ready, tracks]);
+  },[ client, ready, tracks]);
 
 
   return (
