@@ -32,14 +32,13 @@ const token: string | null = null;
 // this hook can be used the get the client/stream in any component
 const useClient = createClient(config);
 const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks()
+interface AgoraProps {
+  channelName: string;
+  setInCall:boolean
+}
 
-
-const VideoCall = (props: {
-  setInCall:    React.Dispatch<React.SetStateAction<boolean>>;
-  // channelName:  React.Dispatch<React.SetStateAction<String>>;
-  displayName:  React.Dispatch<React.SetStateAction<BigInteger>>;
-}) => {
-  const { setInCall} = props;
+const VideoCall = ({channelName,setInCall}: AgoraProps) => {
+  // const { setInCall,channelName} = props;
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
   // using the hook to get access to the client object
@@ -108,11 +107,10 @@ const VideoCall = (props: {
     };
 
     if (ready && tracks) {
-      console.log("init ready");
-      init('main');
+      init(channelName);
     }
 
-  },[ client, ready, tracks]);
+  },[channelName, client, ready, tracks]);
 
 
   return (

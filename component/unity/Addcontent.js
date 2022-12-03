@@ -6,6 +6,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch } from "react-redux";
 import { AddNote,DeleteNote } from "../redux/CounterSlice";
+import { BiTime } from 'react-icons/bi';
 
 const Addcontent = ({action,spaceId,Urldata}) => {
     const [ToggleState, setToggleState] = useState(1);
@@ -157,10 +158,26 @@ const Addcontent = ({action,spaceId,Urldata}) => {
         <button onClick={() => toggleTab(5)} className={`add-tabs-button ${getActiveClass(5,"tabs-button-active")}`}>UPLOAD</button>
     </div>
     <div className='add-tabs-area-container'>
-       <div className={`content ${getActiveClass(1,'active-content')}`}>content1</div>
-       <div className={`content ${getActiveClass(2,'active-content')}`}>content2</div>
-       <div className={`content ${getActiveClass(3,'active-content')}`}>content3</div>
-       <div className={`content ${getActiveClass(4,'active-content')}`}>content4</div>
+       <div className={`content ${getActiveClass(1,'active-content')}`}>
+        <div className="add-content-container">
+          coming soon <span style={{marginLeft:'10px'}}><BiTime /></span>
+        </div>
+       </div>
+       <div className={`content ${getActiveClass(2,'active-content')}`}>
+        <div className="add-content-container">
+          coming soon <span style={{marginLeft:'10px'}}><BiTime /></span>
+        </div>
+       </div>
+       <div className={`content ${getActiveClass(3,'active-content')}`}>
+        <div className="add-content-container">
+          coming soon <span style={{marginLeft:'10px'}}><BiTime /></span>
+        </div>
+       </div>
+       <div className={`content ${getActiveClass(4,'active-content')}`}>
+        <div className="add-content-container">
+          coming soon <span style={{marginLeft:'10px'}}><BiTime /></span>
+        </div>
+       </div>
        <div className={`content upload ${getActiveClass(5,'active-content')}`}>
           <Filedragdrop
            toggleoff={action}

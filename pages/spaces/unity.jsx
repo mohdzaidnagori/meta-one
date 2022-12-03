@@ -1,11 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useState,createRef } from "react"
 import { motion } from "framer-motion";
 import { AiFillHeart, AiOutlineDeploymentUnit, AiOutlineHeart, AiOutlineLeft, AiOutlineRight, AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai"
 import { RiCameraFill } from "react-icons/ri"
-import {BsMicMute,BsMic, BsCameraVideo, BsCameraVideoOff} from 'react-icons/bs'
+import {BsMicMute,BsMic, BsCameraVideo, BsCameraVideoOff, BsShare} from 'react-icons/bs'
 import {GiPauseButton, GiPortal} from 'react-icons/gi'
 import {FiPlay} from 'react-icons/fi'
 import { IoExitOutline } from "react-icons/io5"
@@ -25,14 +25,11 @@ import VideoSidebar from "../../component/unity/VideoSidebar"
 import dynamic from "next/dynamic"
 import { memo } from "react";
 import { useSelector } from "react-redux";
+import * as htmlToImage from "html-to-image";
 
 
 
-export const Unitywrapper = () => {
-  return (
-    <h1>Zaid nagori unity wrapper</h1>
-  )
-}
+
 
 
 export const Unitypage = ({children,enviroment}) => {
@@ -231,7 +228,28 @@ function copy() {
   document.body.removeChild(el);
   setCopied(true);
 }
+const createFileName = (extension = "", ...names) => {
+  if (!extension) {
+    return "";
+  }
 
+  return `${names.join("")}.${extension}`;
+};
+const ref = createRef(null);
+
+const takeScreenShot = async (node) => {
+  const dataURI = await htmlToImage.toJpeg(node);
+  return dataURI;
+};
+
+const download = (image, { name = "img", extension = "jpg" } = {}) => {
+  const a = document.createElement("a");
+  a.href = image;
+  a.download = createFileName(extension, name);
+  a.click();
+};
+
+const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
 
 
 
@@ -245,7 +263,7 @@ function copy() {
  
 
   return (
-    <div className="unity-scene-spaces">
+    <div ref={ref} className="unity-scene-spaces">
     <Toaster />
         <div className='SidebarBox-unity'>
         {/* <Sidabarunity sendMessage={sendMessage}  data={data}   open={buttons.open} closedModal={() => closedModalsidebar('openPosition')} /> */}
@@ -332,11 +350,11 @@ function copy() {
                             }
                          </span> {buttons.count}
                       </div>
-                      <div className="camera">
+                      <div onClick={downloadScreenshot} className="camera">
                         <RiCameraFill />
                       </div>
-                      <div onClick={copy} className="camera unity-hover" data-name={!copied ? "Copy link" : "Copied!"} >
-                        <AiOutlineUserAdd />
+                      <div onClick={copy} style={{fontSize:'17px'}} className="camera unity-hover" data-name={!copied ? "Copy link" : "Copied!"} >
+                        <BsShare />
                       </div>
                   </div> 
                 </div>
@@ -436,7 +454,7 @@ const  ModelLoader = () => {
 
 
 const  CreateAndJoinRooms = () => {
-  const unityData = {roomId:query.query.id,playerName:user.displayName,}
+  const unityData = {roomId:query.query.id,playerName:query.query.id,}
   const unityJson = JSON.stringify(unityData)
   sendMessage("CreateAndJoinRooms", "GetRoomData", unityJson);
 
@@ -510,18 +528,17 @@ return (
 const Wrapper = () => {
   const App = dynamic(import('../../component/agora/VideoCall'), { ssr:false });
   const query = useRouter()
-
-const AppMemo = memo(App);
-const UnityEnviromentMemo = memo(UnityEnviroment)
-
-  return (
-    <>
+  const AppMemo = memo(App);
+  const UnityEnviromentMemo = memo(UnityEnviroment)
+     
+return (
+<Unitypage enviroment={<UnityEnviromentMemo />} >
+    <AppMemo channelName={query.query.id} />
+</Unitypage>
+)
    
-    <Unitypage enviroment={<UnityEnviromentMemo />} >
-    <AppMemo channelName='main' />
-    </Unitypage>
-    </>
-  )
+    
+
 }
 export default Wrapper
 
