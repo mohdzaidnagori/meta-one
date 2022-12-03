@@ -37,8 +37,11 @@ interface AgoraProps {
   setInCall:boolean
 }
 
-const VideoCall = ({channelName,setInCall}: AgoraProps) => {
-  // const { setInCall,channelName} = props;
+const VideoCall = (props:{
+  setInCall:boolean;
+  channelName:string
+}) => {
+  const { setInCall,channelName} = props;
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
   // using the hook to get access to the client object
@@ -155,7 +158,7 @@ const Videos = (props: {
 export const Controls = (props: {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
   setStart: React.Dispatch<React.SetStateAction<boolean>>;
-  setInCall: React.Dispatch<React.SetStateAction<boolean>>;
+  setInCall:boolean;
 }) => {
   const client = useClient();
   const { tracks, setStart, setInCall } = props;
