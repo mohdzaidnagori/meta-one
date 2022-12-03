@@ -1188,6 +1188,14 @@ position: relative;
 .filedraganddrop-area > p {
   font-size: 18px;
 }
+.add-content-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-size: 30px;
+  color: black;
+}
 .sidbarBoxunity{
     display: flex;
     align-items: center;
